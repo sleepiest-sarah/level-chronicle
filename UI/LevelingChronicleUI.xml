@@ -1,0 +1,529 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+  <Script file="Constants\UIConstants.lua" />
+  <Script file="Constants\Strings.lua" />
+  <Script file="Constants\Definitions.lua"/>
+  <Script file="Constants\ModelTemplates.lua" />
+  
+  
+  <Include file="Formatters\Formatters.xml" />
+  
+  <Script file="UIManager.lua"/>
+  <Script file="UIController.lua" />
+  <Script file="LevelingChronicleUI.lua"/>
+   
+  <Include file="Templates\Templates.xml"/>
+  <Include file="Widgets\Widgets.xml" /> 
+  
+  <Frame name="lcSessionMonitor" toplevel="true" parent="UIParent" mixin="SessionMonitorMixin" movable="true" enableMouse="true" hidden="true" inherits="SleepyContainer" clampedToScreen="true">
+    <Size x="200" y="125" />
+    <Anchors>
+      <Anchor point="CENTER" x="500" y="-104" />
+    </Anchors>
+    <Frames>
+      <Button parentKey="MainWindowOpenButton" registerForClicks="LeftButtonUp">
+        <Size x="16" y="16" />
+        <Anchors>
+          <Anchor point="BOTTOMLEFT" x="5" y="7"/>
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+          </Layer>
+        </Layers>
+        <NormalTexture file="Interface\AddOns\LevelingChronicle\UI\Textures\journal_icon.tga"/>
+        <HighlightTexture file="Interface\AddOns\LevelingChronicle\UI\Textures\journal_icon_highlighted.tga"/>
+        <Scripts>
+          <OnClick>
+            self:GetParent():MainWindowOpenButton_OnClick()
+          </OnClick>
+        </Scripts>
+      </Button>
+      
+      <Button parentKey="collapseButton" registerForClicks="LeftButtonUp">
+        <Size x="16" y="16"/>
+        <Anchors>
+          <Anchor point="TOPRIGHT" x="-5" y="-5" />
+        </Anchors>
+        <NormalTexture atlas="UI-QuestTrackerButton-Collapse-Section" useAtlasSize="true"/>
+        <PushedTexture atlas="UI-QuestTrackerButton-Collapse-Section-Pressed" useAtlasSize="true"/>
+        <HighlightTexture atlas="UI-QuestTrackerButton-Highlight" alphaMode="ADD" useAtlasSize="true"/>
+        <Scripts>
+          <OnClick>
+            self:GetParent():CollapseButton_OnClick(self)
+          </OnClick>
+        </Scripts>
+      </Button>
+      
+			<Frame parentKey="stats" inherits="SleepyTable">
+        <KeyValues>
+          <KeyValue key="font" value="GameFontWhite" />
+          <KeyValue key="num_columns" value="2" type="number" />
+          <KeyValue key="rowPadding" value="2" type="number" />
+          <KeyValue key="bottomPadding" value="7" type="number" />
+        </KeyValues>
+				<Size x="180" y="90" />
+				<Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="10" y="-10" />
+				</Anchors>
+			</Frame>
+      
+    </Frames>
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString parentKey="timer" font="GameFontNormal" text="00:00:00">
+          <Size y="18" />
+          <Anchors>
+            <Anchor point="BOTTOM" relativeTo="$parent" x="0" y="5" />
+            <Anchor point="CENTER" relativeTo="$parent" x="0" y="0" />
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForDrag("LeftButton");
+        self:SessionMonitor_OnLoad()
+      </OnLoad>
+      <OnDragStart>
+        self:StartMoving();
+      </OnDragStart>
+      <OnDragStop>
+        self:StopMovingOrSizing();
+      </OnDragStop>
+    </Scripts>
+  </Frame>
+  
+  <Frame name="lcMainWindowContainer" toplevel="true" mixin="lcMainWindowMixin" movable="true" enableMouse="true" hidden="true" clampedToScreen="true">
+		<Size x="1150" y="620" />
+		<Anchors>
+			<Anchor point="CENTER" x="500" y="-104" />
+		</Anchors>
+		<HitRectInsets left="0" right="0" top="0" bottom="0"/>
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture atlas="UI-Frame-Dragonflight-BackgroundTile" vertTile="true" horizTile="true" setAllPoints="true"/>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Button parentKey="closeButton" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" />
+				</Anchors>
+			</Button>
+      
+      <CheckButton checked="true" parentKey="roleplayModeButton" hidden="true">
+        <Size x="16" y="16" />
+        <HitRectInsets left="0" right="-70" top="0" bottom="0"/>
+        <Anchors>
+          <Anchor point="TOPRIGHT" x="-120" y="-2" />
+        </Anchors>
+        <ButtonText text="RP Mode" >
+          <Anchors>
+            <Anchor point="LEFT" x="20" y="0" />
+          </Anchors>
+        </ButtonText>
+        <NormalFont style="QuestFontBlackShadow" />
+        <NormalTexture atlas="checkbox-minimal" />
+        <CheckedTexture atlas="checkmark-minimal" />
+        <DisabledCheckedTexture atlas="checkmark-minimal-disabled" />
+        <Scripts>
+          <OnClick>
+            self:GetParent():RoleplayModeButton_OnClick(self)
+          </OnClick>
+        </Scripts>
+      </CheckButton>
+      
+      <Frame>
+        <Size x="250" y="230" />
+        <Anchors>
+          <Anchor point="BOTTOMLEFT" x="35" y="18" />
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <Texture file="Interface\AddOns\LevelingChronicle\UI\Textures\pen.tga">
+              <Scripts>
+                <OnLoad>
+                  self:SetRotation(0.12)
+                </OnLoad>
+              </Scripts>
+            </Texture>
+          </Layer>
+        </Layers>
+      </Frame>
+      
+      <Frame name="lcCharacterTreeWidgetContainer">
+        <Size x="230" y="320" />
+        <Anchors>
+          <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="35" y="-80" />
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture atlas="tradeskill-background-recipe" />
+          </Layer>
+        </Layers>
+        <Frames>
+        
+          <ScrollFrame name="lcCharacterTreeWidgetScrollFrame" inherits="UIPanelScrollFrameCodeTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" x="15" y="-10" />
+              <Anchor point="BOTTOMRIGHT" x="-15" y="10" />
+            </Anchors>
+            <Frames>
+              <Slider parentKey="ScrollBar">
+                <Size x="16" y="0"/>
+                <Anchors>
+                  <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x="-15" y="-40"/>
+                  <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-15" y="35"/>
+                </Anchors>
+
+                <Frames>
+                  <Button parentKey="ScrollUpButton">
+                    <Size x="17" y="11"/>
+                    <Anchors>
+                      <Anchor point="BOTTOM" relativePoint="TOP" x="0" y="0"/>
+                    </Anchors>
+                    <NormalTexture parentKey="Normal" file="Interface\AddOns\LevelingChronicle\UI\Textures\arrow_icon.tga"/>
+                    <DisabledTexture parentKey="Disabled"  file="Interface\AddOns\LevelingChronicle\UI\Textures\arrow_icon.tga"/>
+                    <HighlightTexture parentKey="Highlight" file="Interface\AddOns\LevelingChronicle\UI\Textures\arrow_icon.tga" alphaMode="ADD"/>
+                    <Scripts>
+                      <OnClick>
+                        local parent = self:GetParent();
+                        local scrollStep = self:GetParent().scrollStep or (parent:GetHeight() / 2);
+                        parent:SetValue(parent:GetValue() - scrollStep);
+                        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
+                      </OnClick>
+                      <OnLoad>
+                        self:GetNormalTexture():SetVertexColor(1, .82, 0)
+                        self:GetDisabledTexture():SetVertexColor(0,0,0)
+                        self:GetHighlightTexture():SetVertexColor(1,1,1)
+                      </OnLoad>
+                    </Scripts>
+                  </Button>
+                  <Button parentKey="ScrollDownButton">
+                    <Size x="17" y="11"/>
+                    <Anchors>
+                      <Anchor point="TOP" relativePoint="BOTTOM"/>
+                    </Anchors>
+                    <NormalTexture parentKey="Normal" file="Interface\AddOns\LevelingChronicle\UI\Textures\arrow_icon.tga"/>
+                    <DisabledTexture parentKey="Disabled"  file="Interface\AddOns\LevelingChronicle\UI\Textures\arrow_icon.tga"/>
+                    <HighlightTexture parentKey="Highlight" file="Interface\AddOns\LevelingChronicle\UI\Textures\arrow_icon.tga" alphaMode="ADD"/>
+                    <Scripts>
+                      <OnClick>
+                        local parent = self:GetParent();
+                        local scrollStep = self:GetParent().scrollStep or (parent:GetHeight() / 2);
+                        parent:SetValue(parent:GetValue() + scrollStep);
+                        PlaySound(SOUNDKIT.U_CHAT_SCROLL_BUTTON);
+                      </OnClick>
+                      <OnLoad>
+                        self:GetNormalTexture():SetRotation(3.14159)
+                        self:GetDisabledTexture():SetRotation(3.14159)
+                        self:GetHighlightTexture():SetRotation(3.14159)
+                        self:GetNormalTexture():SetVertexColor(1, .82, 0)
+                        self:GetDisabledTexture():SetVertexColor(0,0,0)
+                        self:GetHighlightTexture():SetVertexColor(1,1,1)
+                      </OnLoad>                      
+                    </Scripts>
+                  </Button>
+                </Frames>
+
+                <Scripts>
+                  <OnValueChanged>
+                    self:GetParent():SetVerticalScroll(value);
+                  </OnValueChanged>
+                </Scripts>
+
+                <ThumbTexture parentKey="ThumbTexture" file="Interface\AddOns\LevelingChronicle\UI\Textures\thumb_dot.tga">
+                  <Size x="12" y="12"/>
+                </ThumbTexture>
+              </Slider>
+              
+            </Frames>
+            <ScrollChild>
+              <Frame name="lcCharacterTreeWidget" mixin="CharacterTreeWidgetMixin" inherits="SleepyAccordion" setAllPoints="true">
+                <Size x="200" y="1" />
+                <KeyValues>
+                  <KeyValue key="font" value="QuestFont" />
+                  <KeyValue key="header_font" value="QuestTitleFont" />
+                  <KeyValue key="interactive" value="true" type="boolean" />
+                  <KeyValue key="leftPadding" value="20" type="number" />
+                  <KeyValue key="topPadding" value="20" type="number" />
+                  <KeyValue key="rowPadding" value="5" type="number" />
+                  <KeyValue key="bottomPadding" value="80" type="number" />
+                </KeyValues>
+                <Layers>
+                  <Layer level="BACKGROUND">
+                    <Texture atlas="UI-Frame-NightFae-CardParchment">
+                      <Anchors>
+                        <Anchor point="TOPLEFT"/>
+                        <Anchor point="BOTTOMRIGHT"/>
+                      </Anchors>            
+                    </Texture>
+                  </Layer>
+                </Layers>
+                <Scripts>
+                  <OnLoad inherit="prepend" method="CharacterTreeWidget_OnLoad" />
+                </Scripts>
+              </Frame>
+            </ScrollChild>
+          </ScrollFrame>
+        </Frames>
+      </Frame>  <!--lcCharacterTreeWidgetContainer-->
+      
+
+      <Frame name="lcCharacterJourneyWidget" frameLevel="6" mixin="CharacterJourneyWidgetMixin" >
+        <Size x="800" y="500" />
+        <Anchors>
+          <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT" x="-70" y="-30" />
+        </Anchors>
+        <Frames>
+        
+          <Frame parentKey="pageOne" mixin="CharacterJourneyPageOneMixin">
+            <Anchors>
+              <Anchor point="TOPLEFT"/>
+              <Anchor point="BOTTOM"/>
+              <Anchor point="RIGHT" relativeTo="$parent" relativePoint="CENTER" />
+            </Anchors>
+            <Layers>
+              <Layer level="ARTWORK">
+                <Texture parentkey="stampOne" alphaMode="BLEND" alpha=".8" desaturated="false">
+                  <Size x="200" y="200" />
+                  <Anchors>
+                    <Anchor point="TOPRIGHT" x="-25" y="-20"/>
+                  </Anchors>
+                </Texture>      
+                <MaskTexture file="Interface\AddOns\LevelingChronicle\UI\Textures\stamp_mask.tga">
+                  <Size x="200" y="200" />
+                  <Anchors>
+                    <Anchor point="TOPRIGHT" x="-25" y="-20"/>
+                  </Anchors>
+                  <MaskedTextures>
+                    <MaskedTexture childKey="stampOne" />
+                  </MaskedTextures>
+                </MaskTexture>
+              </Layer>
+              <Layer level="BACKGROUND">
+                <Texture parentkey="background" file="Interface\AddOns\LevelingChronicle\UI\Textures\QuestBackgroundClassic_edited.tga" alphaMode="BLEND">
+                  <Anchors>
+                    <Anchor point="TOPLEFT"/>
+                    <Anchor point="BOTTOMRIGHT"/>
+                  </Anchors>
+                  <TexCoords left="0" right=".5918" top="0" bottom=".8027" />
+                </Texture>
+              </Layer>
+            </Layers>
+            <Scripts>
+              <OnMouseWheel>
+                self:GetParent():PageTwo_OnMouseWheel(delta)
+              </OnMouseWheel>
+            </Scripts>
+          </Frame>
+          
+          <Frame parentKey="pageTwo" mixin="CharacterJourneyPageTwoMixin">
+            <Anchors>
+              <Anchor point="TOPRIGHT"/>
+              <Anchor point="BOTTOM"/>
+              <Anchor point="LEFT" relativeTo="$parent" relativePoint="CENTER" />
+            </Anchors>
+            <Layers>
+              <Layer level="BACKGROUND">
+                <Texture parentKey="background" file="Interface\QUESTFRAME\QuestBackgroundDragonflightAzureSpan" alphaMode="BLEND">
+                  <Anchors>
+                    <Anchor point="TOPLEFT" />
+                    <Anchor point="BOTTOMRIGHT" />
+                  </Anchors>
+                  <TexCoords left="0" right=".5918" top="0" bottom=".8027" />
+                </Texture>
+              </Layer>
+            </Layers>
+            <Frames>
+              
+              <Frame parentKey="entryOne" inherits="JourneyEntryTemplate">
+                <Anchors>
+                  <Anchor point="TOP" x="0" y="-15" />
+                  <Anchor point="CENTER" />
+                </Anchors>
+              </Frame>
+              
+              <Frame parentKey="divider">
+                <Size x="200" y="9" />
+                <Anchors>
+                  <Anchor point="CENTER"/>
+                </Anchors>
+                <Layers>
+                  <Layer level="ARTWORK">
+                    <Texture inherits="TextDividerTemplate">
+                      <Anchors>
+                        <Anchor point="TOPLEFT" />
+                        <Anchor point="BOTTOMRIGHT" />
+                      </Anchors>
+                    </Texture>
+                  </Layer>
+                </Layers>                
+              </Frame>
+              
+              <Frame parentKey="entryTwo" inherits="JourneyEntryTemplate">
+                <Anchors>
+                  <Anchor point="BOTTOM" x="0" y="35" />
+                  <Anchor point="CENTER" x="0" y="0"/>
+                </Anchors>       
+              </Frame>
+              
+            </Frames> <!--pageTwo.Frames-->
+            <Scripts>
+              <OnLoad method="OnLoad" />
+              <OnMouseWheel>
+                self:GetParent():PageTwo_OnMouseWheel(delta)
+              </OnMouseWheel>
+            </Scripts>
+          </Frame>  <!--pageTwo-->
+          
+          <Frame parentKey="controls">
+            <Size x="80" y="40" />
+            <Anchors>
+              <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT" x="-70" y="0" />
+            </Anchors>
+            <Layers>
+              <Layer level="ARTWORK">
+                <Texture atlas="StoryHeader-BG" alphaMode="BLEND">
+                  <Anchors>
+                    <Anchor point="TOPLEFT"/>
+                    <Anchor point="BOTTOMRIGHT" />
+                  </Anchors>
+                  <Scripts>
+                    <OnLoad>
+                      self:SetVertexColor(.8,.8,.8)
+                    </OnLoad>
+                  </Scripts>
+                </Texture>
+              </Layer>
+            </Layers>
+            <Frames>
+              <Button parentKey="pagePrev">
+                <Size x="25" y="25" />
+                <Anchors>
+                  <Anchor point="TOPLEFT" x="10" y="-5"/>
+                </Anchors>
+                <NormalTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Up"/>
+                <PushedTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Down"/>
+                <DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-PrevPage-Disabled"/>
+                <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+                <Scripts>
+                  <OnClick>
+                    self:GetParent():GetParent():PageButton_OnClick(self, "prev")
+                  </OnClick>
+                </Scripts>
+              </Button>
+              <Button parentKey="pageNext">
+                <Size x="25" y="25" />
+                <Anchors>
+                  <Anchor point="TOPRIGHT" x="-10" y="-5"/>
+                </Anchors>
+						<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+						<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+						<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+						<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+                <Scripts>
+                  <OnClick>
+                    self:GetParent():GetParent():PageButton_OnClick(self, "next")
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          
+          <Frame parentKey="bookmarks" inherits="SleepyContainer" mixin="CharacterJourneyBookmarkMixin" >
+            <Size x="50" />
+            <KeyValues>
+              <KeyValue key="topPadding" value="40" type="number" />
+            </KeyValues>
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPRIGHT"/>
+              <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMRIGHT"/>
+            </Anchors>
+          </Frame>
+          
+          <Frame name="lcCharacterStatsWidget" frameLevel="8" mixin="CharacterStatsWidgetMixin">
+
+            <Anchors>
+              <Anchor point="TOPLEFT"/>
+              <Anchor point="BOTTOM"/>
+              <Anchor point="RIGHT" relativeTo="$parent" relativePoint="CENTER" />
+            </Anchors>
+            <Frames>
+              
+              <Frame parentKey="summary" inherits="SleepyTextList">
+                <KeyValues>
+                  <KeyValue key="font" value="QuestFont" />
+                  <KeyValue key="topPadding" value="40" type="number" />
+                  <KeyValue key="leftPadding" value="15" type="number" />
+                  <KeyValue key="rightPadding" value="15" type="number" />
+                  <KeyValue key="rowPadding" value="5" type="number" />
+                </KeyValues>
+                <Size x="200" y="600"/>
+                <Anchors>
+                  <Anchor point="TOPLEFT" />
+                </Anchors>
+              </Frame>
+              
+              <Frame parentKey="xp_source_table" inherits="SleepyTable">
+                <Size x="400" y="250" />
+                <KeyValues>
+                    <KeyValue key="font" value="QuestFont" />
+                    <KeyValue key="num_columns" value="6" type="number" />
+                    <KeyValue key="rowPadding" value="5" type="number" />
+                    <KeyValue key="leftPadding" value="20" type="number" />
+                    <KeyValue key="rightPadding" value="30" type="number" />
+                </KeyValues>
+                <Anchors>
+                  <Anchor point="BOTTOMLEFT" x="0"/>
+                </Anchors>              
+                <Layers>
+                  <Layer level="OVERLAY">
+                    <Texture parentKey="header_divider" inherits="UnderlineHighlightTextureTemplate">
+                      <Size x="400" y="7" />
+                      <Anchors>
+                        <Anchor point="TOPLEFT" x="-10" y="-10"/>
+                      </Anchors>
+                      <Scripts>
+                        <OnLoad>
+                          self:SetVertexColor(0,0,0)
+                        </OnLoad>
+                      </Scripts>
+                    </Texture>
+                  </Layer>
+                </Layers>
+              </Frame>
+            
+            </Frames>
+            <Scripts>
+              <OnLoad method="CharacterStatsWidget_OnLoad" />
+            </Scripts>
+          </Frame> <!-- lcCharacterStatsWidget -->
+          
+        </Frames> <!--lcCharacterJourneyWidget.Frames-->
+        <Scripts>
+          <OnLoad method="CharacterJourneyWidget_OnLoad" />
+        </Scripts>
+      </Frame> <!--lcCharacterJourneyWidget-->
+      
+
+      
+      
+      
+    </Frames> <!--lcMainWindowContainer-->
+		<Scripts>
+		  <OnLoad>
+		    self:RegisterForDrag("LeftButton");
+        self:OnLoad()
+		  </OnLoad>
+		  <OnDragStart>
+		    self:StartMoving()
+		  </OnDragStart>
+		  <OnDragStop>
+		    self:StopMovingOrSizing();
+		  </OnDragStop>
+		  <OnUpdate>
+		  </OnUpdate>
+		</Scripts>
+	</Frame>  <!--lcMainWindowContainer-->
+	
+</Ui>

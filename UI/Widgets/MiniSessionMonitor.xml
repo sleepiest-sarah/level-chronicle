@@ -1,0 +1,62 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+  <Script file="MiniSessionMonitor.lua" />
+  
+  <Frame name="lcMiniSessionMonitor" toplevel="true" parent="UIParent" mixin="MiniSessionMonitorMixin" movable="true" enableMouse="true" hidden="true" 
+    inherits="BackdropTemplate" clampedToScreen="true" >
+    <Size x="110" y="25" />
+		<HitRectInsets left="-5" right="-5" bottom="-5" top="-5" />
+    <Frames>
+      <Frame parentKey="timer">
+        <Size x="80" y="25" />
+        <Anchors>
+          <Anchor point="BOTTOMLEFT" x="7" y="0" />
+        </Anchors>
+        <Scripts>
+          <OnEnter>
+            self:GetParent():Timer_OnEnter(self)
+          </OnEnter>
+          <OnLeave>
+            self:GetParent():Timer_OnLeave(self)
+          </OnLeave>
+          <OnLoad>
+            self:RegisterForDrag("LeftButton");
+          </OnLoad>
+          <OnDragStart>
+            self:GetParent():StartMoving();
+          </OnDragStart>
+          <OnDragStop>
+            self:GetParent():StopMovingOrSizing();
+          </OnDragStop>
+        </Scripts>
+      </Frame>
+      
+      <Button name="SessionMonitorExpandButton" enableMouse="true">
+        <Size x="15" y="14"/>
+        <Anchors>
+          <Anchor point="TOPRIGHT" x="-5" y="-5" />
+        </Anchors>
+        <NormalTexture atlas="UI-QuestTrackerButton-Expand-Section" useAtlasSize="true"/>
+        <PushedTexture atlas="UI-QuestTrackerButton-Expand-Section-Pressed" useAtlasSize="true"/>
+        <HighlightTexture atlas="UI-QuestTrackerButton-Highlight" alphaMode="ADD" useAtlasSize="true"/>
+        <Scripts>
+          <OnClick>
+            self:GetParent():ExpandButton_OnClick(self)
+          </OnClick>
+        </Scripts>
+      </Button>    
+    </Frames>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForDrag("LeftButton");
+        self:SessionMonitor_OnLoad()
+      </OnLoad>
+      <OnDragStart>
+        self:StartMoving();
+      </OnDragStart>
+      <OnDragStop>
+        self:StopMovingOrSizing();
+      </OnDragStop>
+      
+    </Scripts>  
+  </Frame>  
+</Ui>

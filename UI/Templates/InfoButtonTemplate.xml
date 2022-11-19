@@ -1,0 +1,22 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+
+  <Button name="InfoButtonTemplate" virtual="true">
+    <Size x="20" y="20"/>
+    <Layers>
+			<Layer level="BACKGROUND">
+				<Texture parentKey="bg" file="Interface\common\help-i" setAllPoints="true" />
+			</Layer>
+    </Layers>
+    <HighlightTexture file="Interface\common\help-i" alphaMode="ADD" hidden="true" setAllPoints="true">
+      <Color r="1" g="1" b="1" a=".2"/>
+    </HighlightTexture>
+    <Scripts>
+			<OnMouseDown>
+				self.bg:AdjustPointsOffset(1, -1);
+			</OnMouseDown>
+			<OnMouseUp>
+				self.bg:ClearPointsOffset();
+			</OnMouseUp>
+    </Scripts>
+  </Button>
+</Ui>

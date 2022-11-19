@@ -1,0 +1,17 @@
+ <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+  <Script file="SleepyTable.lua" />
+
+	<Frame name="SleepyTable" inherits="SleepyContainer" mixin="SleepyTableMixin" virtual="true">
+    <KeyValues>
+      <KeyValue key="font" value="GameFontNormal" />
+      <KeyValue key="layout" value="Table" />
+      
+      <KeyValue key="num_columns" value="2" type="number" />
+      <KeyValue key="rowPadding" value="0" type="number"/>
+    </KeyValues>
+    <Scripts>
+      <OnLoad method="OnLoad" inherit="prepend"/>
+    </Scripts>
+	</Frame>
+  
+</Ui>

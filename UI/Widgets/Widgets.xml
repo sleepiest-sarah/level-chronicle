@@ -1,0 +1,16 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+  <Include file="OptionsPanel.xml" />
+  <Include file="MiniSessionMonitor.xml" />
+  
+  <Script file="CharacterTreeWidget.lua" />
+  <Script file="CharacterJourneyPageOneWidget.lua" />
+  <Script file="CharacterJourneyPageTwoWidget.lua" />
+  <Script file="CharacterJourneyBookmarkWidget.lua" />
+  <Script file="CharacterJourneyWidget.lua" />
+  <Script file="CharacterStatsWidget.lua" />
+  <Script file="SessionMonitor.lua" />
+  <Script file="MainWindowContainer.lua" />
+  
+  
+</Ui>
+

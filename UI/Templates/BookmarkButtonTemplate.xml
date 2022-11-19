@@ -1,0 +1,22 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+
+  <Button name="BookmarkButtonTemplate" virtual="true">
+    <Size x="40" y="50" />
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString parentKey="text" font="GameFontNormalMed3">
+          <Anchors>
+            <Anchor point="LEFT" x="5" y="3"/>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <NormalTexture parentKey="background" atlas="UI-Achievement-Guild-Flag-Short" alphaMode="BLEND">
+    </NormalTexture>
+    <Scripts>
+      <OnLoad>
+        self.background:SetRotation(1.5708)
+      </OnLoad>
+    </Scripts>
+  </Button>
+</Ui>

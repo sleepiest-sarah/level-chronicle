@@ -1,0 +1,92 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+  
+  <Frame name="JourneyEntryTemplate" virtual="true">
+    <Size x="300" y="200" />
+    <Frames>
+      <Frame parentKey="header">
+        <Size x="300" y="20" />
+        <Anchors>
+          <Anchor point="TOPLEFT" />
+        </Anchors>
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString parentKey="text" font="QuestTitleFont" justifyH="CENTER">
+              <Anchors>
+                <Anchor point="TOPLEFT"/>
+                <Anchor point="BOTTOMRIGHT" />
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Frame>
+      
+      <Frame parentKey="date">
+        <Size x="80" y="20" />
+        <Anchors>
+          <Anchor point="TOPLEFT" />
+        </Anchors>        
+        <Layers>
+          <Layer level="ARTWORK">
+            <FontString parentKey="text" font="GameFontBlack" justifyH="LEFT">
+              <Anchors>
+                <Anchor point="TOPLEFT"/>
+                <Anchor point="BOTTOMRIGHT" />
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>        
+      </Frame>
+      
+      <Frame parentKey="rp_entry" setAllPoints="true">
+        <Layers>
+          <Layer level="OVERLAY">
+            <FontString parentKey="text" font="QuestFont" setAllPoints="true">
+            
+            </FontString>
+          </Layer>
+        </Layers>
+      </Frame>
+      
+      <Frame parentKey="summary" inherits="SleepyTable">
+        <Size x="300" y="50" />
+        <KeyValues>
+          <KeyValue key="font" value="QuestFont" />
+          <KeyValue key="num_columns" value="2" type="number" />
+          <KeyValue key="rowPadding" value="2" type="number" />
+        </KeyValues>
+        <Anchors>
+          <Anchor point="TOPLEFT" y="-25" />
+        </Anchors>
+      </Frame>
+      
+      <Frame parentKey="activities" inherits="SleepyTable">
+        <Size x="300" y="130" />
+        <KeyValues>
+          <KeyValue key="font" value="QuestFont" />
+          <KeyValue key="num_columns" value="6" type="number" />
+          <KeyValue key="rowPadding" value="3" type="number" />
+        </KeyValues>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT" relativeKey="$parent.summary" y="0" />
+        </Anchors>
+        <Layers>
+          <Layer level="OVERLAY">
+            <Texture parentKey="header_divider" inherits="UnderlineHighlightTextureTemplate">
+              <Size x="50" y="7" />
+              <Anchors>
+                <Anchor point="TOPRIGHT" x="3" y="-10"/>
+              </Anchors>
+              <Scripts>
+                <OnLoad>
+                  self:SetVertexColor(0,0,0)
+                </OnLoad>
+              </Scripts>
+            </Texture>
+          </Layer>
+        </Layers>
+      </Frame>
+      
+    </Frames>
+  </Frame>
+  
+</Ui>
