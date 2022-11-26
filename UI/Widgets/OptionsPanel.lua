@@ -19,6 +19,33 @@ end
 lcOptionsPanelMixin = CreateFromMixins(OptionsPanelBaseMixin)
 lcAboutPanelMixin = CreateFromMixins(OptionsPanelBaseMixin)
 
+local function createAndInitializeControlFrame(self, option)
+  local frame
+  if (option.control == "checkbox") then
+    frame = CreateFrame("Frame", nil, self, "Options_CheckboxControlTemplate")
+    frame.control:SetChecked(lc.UI.Options[option.key])
+    frame.control:SetScript("OnClick", lcOptionsPanelMixin.Checkbox_OnClick)
+  elseif (option.control == "dropdown") then
+    frame = CreateFrame("Frame", nil, self, "Options_DropdownControlTemplate")
+    
+    local selections = {}
+    for i,label in ipairs(option.selections) do
+      table.insert(selections, {label = label, value = i, key=option.key})
+    end
+    
+    frame.control.DropDown:SetupSelections(selections,lc.UI.Options[option.key])
+    
+    frame.control.cbrHandles:RegisterCallback(frame.control.DropDown.Button, SelectionPopoutButtonMixin.Event.OnValueChanged, lcOptionsPanelMixin.Dropdown_OnValueChanged);
+  end
+  
+  if (option.tooltip) then
+    frame:SetScript("OnEnter", lcOptionsPanelMixin.Control_OnEnter)
+    frame:SetScript("OnLeave", lcOptionsPanelMixin.Control_OnLeave)
+  end
+  
+  return frame
+end
+
 local function setOption(key, value)
   local old_value = lc.UI.Options[key]
   lc.UI.Options[key] = value
@@ -30,14 +57,12 @@ function lcOptionsPanelMixin:LoadOptions()
   
   local option_widgets = {}
   for i,option in ipairs(lc.UI.Definitions.Options) do
-    local control = CreateFrame("Frame", nil, self, "Options_CheckboxControlTemplate")
-    control.text:SetText(option.text)
-    control.checkbutton.key = option.key
-    
-    control.checkbutton:SetChecked(lc.UI.Options[option.key])
-    control.checkbutton:SetScript("OnClick", self.Checkbox_OnClick)
-    
-    table.insert(option_widgets, control)
+    local frame = createAndInitializeControlFrame(self, option)
+    frame.text:SetText(option.text)
+    frame.control.key = option.key
+    frame.tooltip_text = option.tooltip
+
+    table.insert(option_widgets, frame)
   end  
     
   self.controls:DoLayout(option_widgets)
@@ -45,6 +70,23 @@ end
 
 function lcOptionsPanelMixin.Checkbox_OnClick(button)
   setOption(button.key, button:GetChecked())
+end
+
+function lcOptionsPanelMixin.Dropdown_OnValueChanged(event_id, option)
+  setOption(option.key, option.value)
+end
+
+function lcOptionsPanelMixin.Control_OnEnter(control)
+  GameTooltip:SetOwner(control, "ANCHOR_NONE")
+  GameTooltip:SetPoint("BOTTOMLEFT", control, "CENTER", 0, 10)
+  
+  GameTooltip:AddLine(control.tooltip_text, 1, 1, 1)
+  
+  GameTooltip:Show()
+end
+
+function lcOptionsPanelMixin.Control_OnLeave(control)
+  GameTooltip:Hide()
 end
 
 function lcOptionsPanelMixin:OnLoad()

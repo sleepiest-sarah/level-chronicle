@@ -15,27 +15,35 @@ local function refreshUi()
   end
 end
 
+local function setMinimapButtonState()
+  local show = lc.UI.Options.minimap_show == lc.SHOW_MINIMAP_BUTTON_ALWAYS
+  
+  if (lc.UI.Options.minimap_show == lc.SHOW_MINIMAP_BUTTON_ONLY_SUB_MAX) then
+    local char = manager.getCurrentCharacter()
+    show = char.level < char.max_level
+  end
+    
+  if (show) then
+    LibStub("LibDBIcon-1.0"):Show("Journey")
+  else
+    LibStub("LibDBIcon-1.0"):Hide("Journey")
+  end
+end
+
 local function init(event, current_character)
   local saved_state = ds.getUiState()
   
-  UI.Widgets.MainWindow:InitializeRpModeButton(saved_state.rp_mode_on)
+  --UI.Widgets.MainWindow:InitializeRpModeButton(saved_state.rp_mode_on)
   
   lc.UI.Options = ds.getSavedOptions()
   lc.UI.RegisterOptionsPanel()
   
-  local model = lc.UI.Manager.buildCharacterTreeModel()
-  lc.UI.Widgets.CharacterTreeWidget:Refresh(model)
-  
-  
-  lc.UI.Widgets.CharacterTreeWidget:Select(current_character.guid)
-  lc.UI.Widgets.CharacterTreeWidget:RefreshAccordion()
-  
+  saved_state.session_monitor_visible = lc.UI.Options.show_monitor_on_login and (current_character.level < current_character.max_level)
   if (saved_state.session_monitor_visible) then
     lc.UI.OpenSessionMonitor(saved_state.session_monitor_expanded)
   end
-  
-  refreshUi() --there's some kind of race condition with the initial refresh when the session monitor is opened
-  lc.UI.uiRefreshTimer = C_Timer.NewTicker(lc.UI.REFRESH_RATE, refreshUi)
+
+  setMinimapButtonState()
 end
 
 local function saveUiState()
@@ -48,18 +56,8 @@ local function saveUiState()
   ds.saveUiState(state)
 end
 
-local function saveOptions()
-  local options = {}
-  
-  options.minimap_show = UI.Options.minimap_show
-  options.show_monitor_on_login = UI.Options.show_monitor_on_login
-  
-  ds.saveOptions(options)
-end
-
 local function teardown()
   saveUiState()
-  saveOptions()
 end
 
 local function onOptionChanged(event, key, old_value, new_value)
@@ -68,25 +66,26 @@ local function onOptionChanged(event, key, old_value, new_value)
   end
   
   if (key == "minimap_show") then
-    if (new_value) then
-      LibStub("LibDBIcon-1.0"):Show("LevelingChronicle")
-    else
-      LibStub("LibDBIcon-1.0"):Hide("LevelingChronicle")
-    end
+    setMinimapButtonState()
   end
 end
 
 function lc.UI.MinimapButton_OnClick(button, mouseButton, down)
   if (mouseButton == "LeftButton") then
-    if (IsAltKeyDown()) then
+    if (IsShiftKeyDown()) then
       lc.UI.OptionsPanel:Open()
-    elseif (IsShiftKeyDown()) then
-      lc.UI.AboutPanel:Open()
     else
-      lc.UI.OpenSessionMonitor()
+      local char = manager.getCurrentCharacter()
+      if (char.level < char.max_level) then
+        lc.UI.ToggleSessionMonitor()
+      end
     end
   elseif (mouseButton == "RightButton") then
-    lc.UI.OpenMainWindow()
+    if (IsShiftKeyDown()) then
+      lc.UI.AboutPanel:Open()
+    else
+      lc.UI.ToggleMainWindow()
+    end
   end
 end
 
@@ -99,6 +98,11 @@ function lc.UI.OpenMainWindow()
   lc.UI.State.main_window_shown = true
 end
 
+function lc.UI.CloseMainWindow()
+  lcMainWindowContainer:Hide()
+  lc.UI.State.main_window_shown = false  
+end
+
 function lc.UI.OpenSessionMonitor(full)
   if (not lc.UI.State.session_monitor_visible) then
     lc.UI.State.session_monitor_expanded = (full == nil and lc.UI.State.session_monitor_expanded) or full
@@ -107,7 +111,9 @@ function lc.UI.OpenSessionMonitor(full)
     lc.UI.State.active_session_monitor = lc.UI.State.session_monitor_expanded and lc.UI.Widgets.SessionMonitor or lc.UI.Widgets.MiniSessionMonitor
     
     lc.UI.State.active_session_monitor:Show()
-    refreshUi()
+
+    refreshUi() --there's some kind of race condition with the initial refresh when the session monitor is opened
+    lc.UI.uiRefreshTimer = C_Timer.NewTicker(lc.UI.REFRESH_RATE, refreshUi)
   end
 end
 
@@ -116,6 +122,30 @@ function lc.UI.CloseSessionMonitor()
   if (lc.UI.State.active_session_monitor) then
     lc.UI.State.active_session_monitor:Hide()
     lc.UI.State.active_session_monitor = nil
+    
+    lc.UI.uiRefreshTimer:Cancel()
+  end
+end
+
+function lc.UI.ResetSessionMonitorPosition()
+  lc.UI.OpenSessionMonitor()
+  lc.UI.State.active_session_monitor:ClearAllPoints()
+  lc.UI.State.active_session_monitor:SetPoint("CENTER")
+end
+
+function lc.UI.ToggleSessionMonitor()
+  if (lc.UI.State.session_monitor_visible) then
+    lc.UI.CloseSessionMonitor()
+  else
+    lc.UI.OpenSessionMonitor()
+  end
+end
+
+function lc.UI.ToggleMainWindow()
+  if (lc.UI.State.main_window_shown) then
+    lc.UI.CloseMainWindow()
+  else
+    lc.UI.OpenMainWindow()
   end
 end
 

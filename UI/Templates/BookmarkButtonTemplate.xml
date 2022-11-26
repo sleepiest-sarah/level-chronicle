@@ -6,7 +6,7 @@
       <Layer level="OVERLAY">
         <FontString parentKey="text" font="GameFontNormalMed3">
           <Anchors>
-            <Anchor point="LEFT" x="5" y="3"/>
+            <Anchor point="LEFT" x="6" y="2"/>
           </Anchors>
         </FontString>
       </Layer>

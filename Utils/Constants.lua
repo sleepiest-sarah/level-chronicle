@@ -2,10 +2,18 @@ LevelingChronicle = {}
 
 local lc = LevelingChronicle
 
-lc.ADDON_NAME = "LevelingChronicle"
+lc.ADDON_NAME = "Journey"
 
-lc.EVENT_WINDOW_SECONDS = 1
+lc.EVENT_WINDOW_SECONDS = 1.5
 lc.INACTIVITY_PAUSE_AFTER = 300
+
+lc.SESSIONS_TO_KEEP = 10
+
+lc.ELAPSED_TIME_EASING = 60
+
+lc.SHOW_MINIMAP_BUTTON_ALWAYS = 1
+lc.SHOW_MINIMAP_BUTTON_ONLY_SUB_MAX = 2
+lc.SHOW_MINIMAP_BUTTON_NEVER = 3
 
 --Internal Custom Events
 lc.Event = {}

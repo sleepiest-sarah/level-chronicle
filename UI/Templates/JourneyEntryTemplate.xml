@@ -10,7 +10,7 @@
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <FontString parentKey="text" font="QuestTitleFont" justifyH="CENTER">
+            <FontString parentKey="text" font="lcQuestTitleFont" justifyH="CENTER">
               <Anchors>
                 <Anchor point="TOPLEFT"/>
                 <Anchor point="BOTTOMRIGHT" />
@@ -27,7 +27,7 @@
         </Anchors>        
         <Layers>
           <Layer level="ARTWORK">
-            <FontString parentKey="text" font="GameFontBlack" justifyH="LEFT">
+            <FontString parentKey="text" font="lcGameFontBlack" justifyH="LEFT">
               <Anchors>
                 <Anchor point="TOPLEFT"/>
                 <Anchor point="BOTTOMRIGHT" />
@@ -40,7 +40,7 @@
       <Frame parentKey="rp_entry" setAllPoints="true">
         <Layers>
           <Layer level="OVERLAY">
-            <FontString parentKey="text" font="QuestFont" setAllPoints="true">
+            <FontString parentKey="text" font="lcQuestFont" setAllPoints="true">
             
             </FontString>
           </Layer>
@@ -50,7 +50,7 @@
       <Frame parentKey="summary" inherits="SleepyTable">
         <Size x="300" y="50" />
         <KeyValues>
-          <KeyValue key="font" value="QuestFont" />
+          <KeyValue key="font" value="lcQuestFont" />
           <KeyValue key="num_columns" value="2" type="number" />
           <KeyValue key="rowPadding" value="2" type="number" />
         </KeyValues>
@@ -62,7 +62,7 @@
       <Frame parentKey="activities" inherits="SleepyTable">
         <Size x="300" y="130" />
         <KeyValues>
-          <KeyValue key="font" value="QuestFont" />
+          <KeyValue key="font" value="lcQuestFont" />
           <KeyValue key="num_columns" value="6" type="number" />
           <KeyValue key="rowPadding" value="3" type="number" />
         </KeyValues>

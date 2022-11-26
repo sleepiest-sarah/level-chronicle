@@ -1,3 +1,4 @@
-freepik - text dividers
-icons8 - diary icon
-Remi@opengameart.org - pen
+freepik - jounral page text dividers
+icons8 - monitor journal icon
+BlackJellyCat@itch.io - minimap journal icon
+Remi@opengameart.org - journal pen graphic

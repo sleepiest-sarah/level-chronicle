@@ -2,6 +2,7 @@ local lc = require('Utils.Constants') or LevelingChronicle
 
 local math_utils = require('Libs.LuaCore.Utils.MathUtils') or LCMathUtils
 local safediv = math_utils.safediv
+local safesub = math_utils.safesub
 
 --TODO options for unit conversions and outputting sorted keys to reduce manager clutter
 lc.Calculator = {}
@@ -11,7 +12,7 @@ function m.calculateSessionStats(stats, elapsed_time, char)
   local res = {}
   elapsed_time = elapsed_time == 0 and 1 or elapsed_time
   
-  res.xp_rate = stats.total_xp_gained / elapsed_time
+  res.xp_rate = safediv(stats.total_xp_gained,elapsed_time)
   res.pct_levels_rate = (stats.pct_levels_gained or 0) / elapsed_time
   
   local total_xp_no_rested = stats.total_xp_gained - stats.bonus_rested_xp_gained
@@ -29,7 +30,9 @@ function m.calculateToLevelNumbers(stats, char)
   local xp_to_level = char.max_xp - char.xp
   
   --x_to_level = xp_to_level / (x_xp_gained / num_x_completed)
-  res.kills_to_level = safediv(xp_to_level, safediv(stats.kill_xp_gained,stats.num_player_kills))
+  res.kills_to_level = safediv(xp_to_level, safediv(stats.kill_xp_gained,stats.num_kills))
+  res.kills_instance_to_level = safediv(xp_to_level, safediv(stats.kill_xp_instance_gained,stats.num_kills_instance))
+  res.kills_world_to_level = safediv(xp_to_level, safediv(stats.kill_xp_world_gained,stats.num_kills_world))
   res.quests_to_level = safediv(xp_to_level, safediv(stats.quest_xp_gained,stats.num_quests_completed))
   res.scenarios_to_level = safediv(xp_to_level, safediv(stats.scenario_xp_gained,stats.num_scenarios_completed))
   res.gathers_to_level = safediv(xp_to_level, safediv(stats.gathering_xp_gained,stats.num_gathers))
@@ -46,8 +49,12 @@ function m.calculateXpSourcePercents(stats)
   res.gathering = safediv(stats.gathering_xp_gained, stats.total_xp_gained)
   res.pet_battle = safediv(stats.pet_battle_xp_gained, stats.total_xp_gained)
   res.scenario = safediv(stats.scenario_xp_gained, stats.total_xp_gained)
-  res.kill = safediv(stats.kill_xp_gained, stats.total_xp_gained)
+  res.kill_world = safediv(stats.kill_xp_world_gained, stats.total_xp_gained)
   res.battleground = safediv(stats.battleground_xp_gained, stats.total_xp_gained)
+  
+  local scenario_bonus = safesub(stats.scenario_xp_gained,stats.kill_xp_instance_gained)
+  res.kill_instance = safediv(stats.kill_xp_instance_gained, stats.total_xp_gained)
+  res.scenario_bonus = safediv(scenario_bonus, stats.total_xp_gained)
   
   return res
 end
@@ -61,8 +68,12 @@ function m.calculateXpRates(stats)
   res.quest = safediv(stats.quest_xp_gained, open_world_time)
   res.scenario = safediv(stats.scenario_xp_gained, stats.time_scenarios)
   res.battleground = safediv(stats.battleground_xp_gained, stats.time_battlegrounds)
-  res.kill = safediv(stats.kill_xp_gained, open_world_time) --TODO subtract out scenario kill xp
+  res.kill_world = safediv(stats.kill_xp_world_gained, open_world_time)
   --res.other = safediv(stats.other_xp_gained, open_world_time)
+  
+  local scenario_bonus = safesub(stats.scenario_xp_gained,stats.kill_xp_instance_gained)
+  res.kill_instance = safediv(stats.kill_xp_instance_gained, stats.time_scenarios)
+  res.scenario_bonus = safediv(scenario_bonus, stats.time_scenarios)
   
   return res
 end
@@ -84,8 +95,13 @@ function m.calculatePctLevelPerEvent(stats)
   res.gathering = safediv(safediv(stats.gathering_xp_gained, stats.num_gathers), stats.total_xp_gained)
   res.pet_battle = safediv(safediv(stats.pet_battle_xp_gained, stats.num_pet_battles), stats.total_xp_gained)
   res.scenario = safediv(safediv(stats.scenario_xp_gained, stats.num_scenarios_completed), stats.total_xp_gained)
-  res.kill = safediv(safediv(stats.kill_xp_gained, stats.num_player_kills), stats.total_xp_gained)
+  res.kill_world = safediv(safediv(stats.kill_xp_world_gained, stats.num_kills_world), stats.total_xp_gained)
+  res.kill = safediv(safediv(stats.kill_xp_gained, stats.num_kills), stats.total_xp_gained)
   res.battleground = safediv(safediv(stats.battleground_xp_gained, stats.num_battlegrounds_completed), stats.total_xp_gained)  
+  
+  local scenario_bonus = safesub(stats.scenario_xp_gained,stats.kill_xp_instance_gained)
+  res.scenario_bonus = safediv(safediv(scenario_bonus, stats.num_scenarios_completed), stats.total_xp_gained)
+  res.kill_instance = safediv(safediv(stats.kill_xp_instance_gained, stats.num_kills_instance), stats.total_xp_gained)
   
   return res
 end
@@ -102,8 +118,10 @@ function m.calculateAveragePctLevelPerEvent(char_level_records)
         gathering = level_record.num_gathers,
         pet_battle = level_record.num_pet_battles,
         scenario = level_record.num_scenarios_completed,
-        kill = level_record.num_player_kills,
-        battleground = level_record.num_battlegrounds_completed
+        kill_world = level_record.num_kills_world,
+        battleground = level_record.num_battlegrounds_completed,
+        scenario_bonus = level_record.num_scenarios_completed,
+        kill_instance = level_record.num_kills_instance
       }
   end
   

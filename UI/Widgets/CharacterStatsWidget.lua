@@ -8,21 +8,16 @@ CharacterStatsWidgetMixin = {}
 local function styleSummaryFields(self, fs)
   if (fs.index % 2 == 0) then
     fs:SetJustifyH("RIGHT")
-    fs:SetFontObject("GameFontBlack")
+    fs:SetFontObject("lcGameFontBlackOutline")
   else
     fs:SetJustifyH("LEFT")
-    fs:SetFontObject("QuestFont")
+    fs:SetFontObject("lcQuestFont")
   end
 end
 
 local function styleTableFields(self, fs)
-  if (fs.x == 0) then
-    fs:SetJustifyH("LEFT")
-  else
-    fs:SetJustifyH("RIGHT")
-    if (fs.y > 0) then
-      fs:SetFontObject("GameFontBlack")
-    end
+  if (fs.y > 0) then
+    fs:SetFontObject("lcGameFontBlackOutline")
   end
 end
 

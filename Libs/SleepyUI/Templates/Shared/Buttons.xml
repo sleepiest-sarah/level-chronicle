@@ -9,7 +9,7 @@
 			</Anchors>
 		</ButtonText>
 		<NormalFont style="GameFontNormalMed3"/>
-		<HighlightFont style="QuestTitleHighlight"/>
+		<HighlightFont style="GameFontHighlightMedium"/>
     <Scripts>
       <OnClick>
         self:GetParent():Header_OnClick(self)
@@ -21,7 +21,7 @@
     <Size x="100" y="15"/>
     <Layers>
       <Layer level="BACKGROUND">
-        <Texture parentKey="highlightTexture" file="Interface\AddOns\LevelingChronicle\UI\Textures\underline_highlight.tga">
+        <Texture parentKey="highlightTexture" file="Interface\AddOns\Journey\UI\Textures\underline_highlight.tga">
           <Anchors>
             <Anchor point="TOPLEFT" x="10" y="-9" />
             <Anchor point="BOTTOMRIGHT" x="0" y="-5"/>

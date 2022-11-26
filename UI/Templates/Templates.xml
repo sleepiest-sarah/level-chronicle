@@ -1,17 +1,17 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+  <Include  file="Fonts.xml" />
   <Include file="JourneyEntryTemplate.xml" />
   <Include file="BookmarkButtonTemplate.xml" />
   <Include file="InfoButtonTemplate.xml" />
   
-  <Texture name="HandDrawnPlusTextureTemplate" file="Interface\AddOns\LevelingChronicle\UI\Textures\journal_icon.tga" virtual="true">
+  <Texture name="HandDrawnPlusTextureTemplate" file="Interface\AddOns\Journey\UI\Textures\journal_icon.tga" virtual="true">
     <Size x="50" y="50"/>
   </Texture>
   
-  <Texture name="UnderlineHighlightTextureTemplate" file="Interface\AddOns\LevelingChronicle\UI\Textures\underline_highlight.tga" virtual="true">
+  <Texture name="UnderlineHighlightTextureTemplate" file="Interface\AddOns\Journey\UI\Textures\underline_highlight.tga" virtual="true">
   </Texture>  
   
-  <Texture name="TextDividerTemplate" file="Interface\AddOns\LevelingChronicle\UI\Textures\text_dividers.tga" virtual="true">
-    <TexCoords left="0" right=".5781" top="0" bottom=".0703" />
+  <Texture name="TextDividerTemplate" file="Interface\AddOns\Journey\UI\Textures\text_dividers.tga" virtual="true">
   </Texture>
 
 </Ui>

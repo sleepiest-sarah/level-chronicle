@@ -1,5 +1,5 @@
-## Interface: 10000
-## Title: 2 Bars to Midnight
+## Interface: 10002
+## Title: Journey
 ## Author: Sarah Mantovani
 ## Version: 0.1a
 ## SavedVariables: lcCharacterDb, lcOptionsDb
@@ -19,7 +19,7 @@ Utils\Calculator.lua
 Recorder\Recorder.lua
 Recorder\RecorderManager.lua
 
-LevelingChronicle.lua
+Journey.lua
 
 UI\LevelingChronicleUI.xml
 

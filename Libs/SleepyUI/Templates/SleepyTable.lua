@@ -6,6 +6,7 @@ local function fontStringResetter(pool, fs)
   fs.x = nil
   fs.colspan = nil
   fs:SetWordWrap(false)
+  fs:SetJustifyH("CENTER")
   FramePool_HideAndClearAnchors(pool, fs)
 end
 
@@ -31,8 +32,8 @@ function SleepyTableMixin:SetTableItems(table_def)
         
         --TODO clean up the resetters and use a pool collection instead of polluting the pool
         fc:SetFontObject(self.font)
-        self:SetFontStringOptions(fc, col)
         fc:SetText(col.text)
+        self:SetFontStringOptions(fc, col)
         
         self:OnAcquire(fc)
         table.insert(item_widgets, fc)

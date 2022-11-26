@@ -191,4 +191,18 @@ function mathUtils.safemult(a,b)
   return a * b
 end
 
+-- returns a + b converting params to 0 if nil
+function mathUtils.safeadd(a,b)
+  a = a or 0
+  b = b or 0
+  return a+b
+end
+
+-- returns a - b converting params to 0 if nil
+function mathUtils.safesub(a,b)
+  a = a or 0
+  b = b or 0
+  return a-b  
+end
+
 return mathUtils

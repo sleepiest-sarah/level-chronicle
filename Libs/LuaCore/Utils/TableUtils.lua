@@ -212,4 +212,14 @@ function tableUtils.rand(t)
   return t[rand_index]
 end
 
+function tableUtils.reverse(t)
+  local i = #t
+  return function ()
+           i = i - 1
+           if (i > 0) then
+             return t[i]
+           end
+         end
+end
+
 return LCTableUtils

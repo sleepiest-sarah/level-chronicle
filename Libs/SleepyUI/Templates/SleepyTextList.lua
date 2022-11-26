@@ -20,6 +20,8 @@ function SleepyTextListMixin:SetTextItems(items)
       fc:SetWidth(self:GetWidth())
       fc:SetText(item)
       fc.index = i
+      fc:SetFontObject(self.font)
+      self:SetFontStringOptions(fc, item)
       self:OnAcquire(fc)
       
       table.insert(item_widgets, fc)

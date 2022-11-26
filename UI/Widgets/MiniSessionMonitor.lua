@@ -51,7 +51,7 @@ end
 function MiniSessionMonitorMixin:SessionMonitor_OnLoad()
   UI.Widgets.MiniSessionMonitor = self
   
-  self.eta_timer = self.timer:CreateFontString(nil, "OVERLAY", "GameFontHighlightLarge")
+  self.eta_timer = self.timer:CreateFontString(nil, "OVERLAY", "lcGameFontHighlightLarge")
   self.eta_timer:SetAllPoints(true)
   self.eta_timer:SetJustifyV("CENTER")
   

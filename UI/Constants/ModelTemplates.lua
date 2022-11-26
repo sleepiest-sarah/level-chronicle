@@ -9,6 +9,7 @@ lc.UI.ModelTemplates.SessionMonitor = {
   avg_time_to_level = "00:00:00",
   elapsed_time = 0,
   elapsed_time_string = "00:00:00",
+  live_timer_string = "00:00:00",
   xp_gained = "0",
   xp_rate = "0",
   rested_xp_time_saved = "0",

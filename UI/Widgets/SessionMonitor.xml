@@ -1,0 +1,82 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+  <Script file="SessionMonitor.lua" />
+
+  <Frame name="lcSessionMonitor" toplevel="true" parent="UIParent" mixin="SessionMonitorMixin" movable="true" enableMouse="true" hidden="true" inherits="SleepyContainer" clampedToScreen="true">
+    <Size x="200" y="125" />
+    <Anchors>
+      <Anchor point="CENTER" x="500" y="-104" />
+    </Anchors>
+    <Frames>
+      <Button parentKey="MainWindowOpenButton" registerForClicks="LeftButtonUp">
+        <Size x="16" y="16" />
+        <Anchors>
+          <Anchor point="BOTTOMLEFT" x="5" y="7"/>
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+          </Layer>
+        </Layers>
+        <NormalTexture file="Interface\AddOns\Journey\UI\Textures\journal_icon.tga"/>
+        <HighlightTexture file="Interface\AddOns\Journey\UI\Textures\journal_icon_highlighted.tga"/>
+        <Scripts>
+          <OnClick>
+            self:GetParent():MainWindowOpenButton_OnClick()
+          </OnClick>
+        </Scripts>
+      </Button>
+      
+      <Button parentKey="collapseButton" registerForClicks="LeftButtonUp">
+        <Size x="16" y="16"/>
+        <Anchors>
+          <Anchor point="TOPRIGHT" x="-5" y="-5" />
+        </Anchors>
+        <NormalTexture atlas="UI-QuestTrackerButton-Collapse-Section" useAtlasSize="true"/>
+        <PushedTexture atlas="UI-QuestTrackerButton-Collapse-Section-Pressed" useAtlasSize="true"/>
+        <HighlightTexture atlas="UI-QuestTrackerButton-Highlight" alphaMode="ADD" useAtlasSize="true"/>
+        <Scripts>
+          <OnClick>
+            self:GetParent():CollapseButton_OnClick(self)
+          </OnClick>
+        </Scripts>
+      </Button>
+      
+			<Frame parentKey="stats" inherits="SleepyTable">
+        <KeyValues>
+          <KeyValue key="font" value="lcGameFontWhite" />
+          <KeyValue key="num_columns" value="2" type="number" />
+          <KeyValue key="rowPadding" value="2" type="number" />
+          <KeyValue key="bottomPadding" value="7" type="number" />
+        </KeyValues>
+				<Size x="180" y="90" />
+				<Anchors>
+				  <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="10" y="-10" />
+				</Anchors>
+			</Frame>
+      
+    </Frames>
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString parentKey="timer" font="lcGameFontNormal" text="00:00:00">
+          <Size y="18" />
+          <Anchors>
+            <Anchor point="BOTTOM" relativeTo="$parent" x="0" y="5" />
+            <Anchor point="CENTER" relativeTo="$parent" x="0" y="0" />
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForDrag("LeftButton");
+        self:SessionMonitor_OnLoad()
+      </OnLoad>
+      <OnDragStart>
+        self:StartMoving();
+      </OnDragStart>
+      <OnDragStop>
+        self:StopMovingOrSizing();
+      </OnDragStop>
+    </Scripts>
+  </Frame>
+
+</Ui>

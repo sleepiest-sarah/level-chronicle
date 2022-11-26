@@ -52,6 +52,10 @@ function da.saveSession(char, session)
   session_record.end_time = session.end_time
   table.insert(char_record.sessions, session_record)
   
+  if (#char_record.sessions > lc.SESSIONS_TO_KEEP) then
+    table.remove(char_record.sessions, 1)
+  end
+  
   local stats_record = char_record.stats.total or {}
   stats_record = table_utils.addTables(stats_record, session.stats)
   stats_record.elapsed_time = (stats_record.elapsed_time or 0) + session.elapsed_time
@@ -120,6 +124,10 @@ end
 
 function da.getCharacterLevelEvents(guid)
   return db.characters[guid] and db.characters[guid].events and db.characters[guid].events.levels
+end
+
+function da.getCharacterSessions(guid)
+  return db.characters[guid] and db.characters[guid].sessions
 end
 
 return da

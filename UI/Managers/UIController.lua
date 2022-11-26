@@ -16,11 +16,19 @@ function controller.loadCharacterJourneyWidget(character_guid, page)
     page = page or (widget.model and widget.model.page)
   end
   
-  --TODO also need consider how to refresh the widget after a character levels up
-  -- and how to just mark as dirty instead of doing all this
-  if (not widget.model or character_guid ~= widget.model.char.guid or page ~= widget.model.page or UI.State.rp_mode_on ~= widget.model.rp_mode_on) then
-  
-    local model = lc.UI.Manager.buildCharacterJourneyModel(character_guid, page, 2)
-    lc.UI.Widgets.CharacterJourneyWidget:Refresh(model)
+  local model = lc.UI.Manager.buildCharacterJourneyModel(character_guid, tonumber(page), 2)
+  lc.UI.Widgets.CharacterJourneyWidget:Refresh(model)
+end
+
+function controller.loadMainWindow(character_guid)
+  if (not character_guid) then
+    local char = lc.RecorderManager.getCurrentCharacter()
+    character_guid = char.guid
   end
+  
+  local model = lc.UI.Manager.buildCharacterTreeModel()
+  lc.UI.Widgets.CharacterTreeWidget:Refresh(model)
+  
+  lc.UI.Widgets.CharacterTreeWidget:Select(character_guid)
+  lc.UI.Widgets.CharacterTreeWidget:RefreshAccordion()  
 end

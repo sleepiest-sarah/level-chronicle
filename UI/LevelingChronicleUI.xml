@@ -4,93 +4,15 @@
   <Script file="Constants\Definitions.lua"/>
   <Script file="Constants\ModelTemplates.lua" />
   
-  
   <Include file="Formatters\Formatters.xml" />
   
-  <Script file="UIManager.lua"/>
-  <Script file="UIController.lua" />
+  <Script file="Managers\UIDataServices.lua" />
+  <Script file="Managers\UIManager.lua"/>
+  <Script file="Managers\UIController.lua" />
   <Script file="LevelingChronicleUI.lua"/>
    
   <Include file="Templates\Templates.xml"/>
   <Include file="Widgets\Widgets.xml" /> 
-  
-  <Frame name="lcSessionMonitor" toplevel="true" parent="UIParent" mixin="SessionMonitorMixin" movable="true" enableMouse="true" hidden="true" inherits="SleepyContainer" clampedToScreen="true">
-    <Size x="200" y="125" />
-    <Anchors>
-      <Anchor point="CENTER" x="500" y="-104" />
-    </Anchors>
-    <Frames>
-      <Button parentKey="MainWindowOpenButton" registerForClicks="LeftButtonUp">
-        <Size x="16" y="16" />
-        <Anchors>
-          <Anchor point="BOTTOMLEFT" x="5" y="7"/>
-        </Anchors>
-        <Layers>
-          <Layer level="BACKGROUND">
-          </Layer>
-        </Layers>
-        <NormalTexture file="Interface\AddOns\LevelingChronicle\UI\Textures\journal_icon.tga"/>
-        <HighlightTexture file="Interface\AddOns\LevelingChronicle\UI\Textures\journal_icon_highlighted.tga"/>
-        <Scripts>
-          <OnClick>
-            self:GetParent():MainWindowOpenButton_OnClick()
-          </OnClick>
-        </Scripts>
-      </Button>
-      
-      <Button parentKey="collapseButton" registerForClicks="LeftButtonUp">
-        <Size x="16" y="16"/>
-        <Anchors>
-          <Anchor point="TOPRIGHT" x="-5" y="-5" />
-        </Anchors>
-        <NormalTexture atlas="UI-QuestTrackerButton-Collapse-Section" useAtlasSize="true"/>
-        <PushedTexture atlas="UI-QuestTrackerButton-Collapse-Section-Pressed" useAtlasSize="true"/>
-        <HighlightTexture atlas="UI-QuestTrackerButton-Highlight" alphaMode="ADD" useAtlasSize="true"/>
-        <Scripts>
-          <OnClick>
-            self:GetParent():CollapseButton_OnClick(self)
-          </OnClick>
-        </Scripts>
-      </Button>
-      
-			<Frame parentKey="stats" inherits="SleepyTable">
-        <KeyValues>
-          <KeyValue key="font" value="GameFontWhite" />
-          <KeyValue key="num_columns" value="2" type="number" />
-          <KeyValue key="rowPadding" value="2" type="number" />
-          <KeyValue key="bottomPadding" value="7" type="number" />
-        </KeyValues>
-				<Size x="180" y="90" />
-				<Anchors>
-				  <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT" x="10" y="-10" />
-				</Anchors>
-			</Frame>
-      
-    </Frames>
-    <Layers>
-      <Layer level="OVERLAY">
-        <FontString parentKey="timer" font="GameFontNormal" text="00:00:00">
-          <Size y="18" />
-          <Anchors>
-            <Anchor point="BOTTOM" relativeTo="$parent" x="0" y="5" />
-            <Anchor point="CENTER" relativeTo="$parent" x="0" y="0" />
-          </Anchors>
-        </FontString>
-      </Layer>
-    </Layers>
-    <Scripts>
-      <OnLoad>
-        self:RegisterForDrag("LeftButton");
-        self:SessionMonitor_OnLoad()
-      </OnLoad>
-      <OnDragStart>
-        self:StartMoving();
-      </OnDragStart>
-      <OnDragStop>
-        self:StopMovingOrSizing();
-      </OnDragStop>
-    </Scripts>
-  </Frame>
   
   <Frame name="lcMainWindowContainer" toplevel="true" mixin="lcMainWindowMixin" movable="true" enableMouse="true" hidden="true" clampedToScreen="true">
 		<Size x="1150" y="620" />
@@ -121,7 +43,7 @@
             <Anchor point="LEFT" x="20" y="0" />
           </Anchors>
         </ButtonText>
-        <NormalFont style="QuestFontBlackShadow" />
+        <NormalFont style="lcQuestFontBlackShadow" />
         <NormalTexture atlas="checkbox-minimal" />
         <CheckedTexture atlas="checkmark-minimal" />
         <DisabledCheckedTexture atlas="checkmark-minimal-disabled" />
@@ -139,7 +61,7 @@
         </Anchors>
         <Layers>
           <Layer level="ARTWORK">
-            <Texture file="Interface\AddOns\LevelingChronicle\UI\Textures\pen.tga">
+            <Texture file="Interface\AddOns\Journey\UI\Textures\pen.tga">
               <Scripts>
                 <OnLoad>
                   self:SetRotation(0.12)
@@ -181,9 +103,9 @@
                     <Anchors>
                       <Anchor point="BOTTOM" relativePoint="TOP" x="0" y="0"/>
                     </Anchors>
-                    <NormalTexture parentKey="Normal" file="Interface\AddOns\LevelingChronicle\UI\Textures\arrow_icon.tga"/>
-                    <DisabledTexture parentKey="Disabled"  file="Interface\AddOns\LevelingChronicle\UI\Textures\arrow_icon.tga"/>
-                    <HighlightTexture parentKey="Highlight" file="Interface\AddOns\LevelingChronicle\UI\Textures\arrow_icon.tga" alphaMode="ADD"/>
+                    <NormalTexture parentKey="Normal" file="Interface\AddOns\Journey\UI\Textures\arrow_icon.tga"/>
+                    <DisabledTexture parentKey="Disabled"  file="Interface\AddOns\Journey\UI\Textures\arrow_icon.tga"/>
+                    <HighlightTexture parentKey="Highlight" file="Interface\AddOns\Journey\UI\Textures\arrow_icon.tga" alphaMode="ADD"/>
                     <Scripts>
                       <OnClick>
                         local parent = self:GetParent();
@@ -203,9 +125,9 @@
                     <Anchors>
                       <Anchor point="TOP" relativePoint="BOTTOM"/>
                     </Anchors>
-                    <NormalTexture parentKey="Normal" file="Interface\AddOns\LevelingChronicle\UI\Textures\arrow_icon.tga"/>
-                    <DisabledTexture parentKey="Disabled"  file="Interface\AddOns\LevelingChronicle\UI\Textures\arrow_icon.tga"/>
-                    <HighlightTexture parentKey="Highlight" file="Interface\AddOns\LevelingChronicle\UI\Textures\arrow_icon.tga" alphaMode="ADD"/>
+                    <NormalTexture parentKey="Normal" file="Interface\AddOns\Journey\UI\Textures\arrow_icon.tga"/>
+                    <DisabledTexture parentKey="Disabled"  file="Interface\AddOns\Journey\UI\Textures\arrow_icon.tga"/>
+                    <HighlightTexture parentKey="Highlight" file="Interface\AddOns\Journey\UI\Textures\arrow_icon.tga" alphaMode="ADD"/>
                     <Scripts>
                       <OnClick>
                         local parent = self:GetParent();
@@ -231,7 +153,7 @@
                   </OnValueChanged>
                 </Scripts>
 
-                <ThumbTexture parentKey="ThumbTexture" file="Interface\AddOns\LevelingChronicle\UI\Textures\thumb_dot.tga">
+                <ThumbTexture parentKey="ThumbTexture" file="Interface\AddOns\Journey\UI\Textures\thumb_dot.tga">
                   <Size x="12" y="12"/>
                 </ThumbTexture>
               </Slider>
@@ -241,8 +163,9 @@
               <Frame name="lcCharacterTreeWidget" mixin="CharacterTreeWidgetMixin" inherits="SleepyAccordion" setAllPoints="true">
                 <Size x="200" y="1" />
                 <KeyValues>
-                  <KeyValue key="font" value="QuestFont" />
-                  <KeyValue key="header_font" value="QuestTitleFont" />
+                  <KeyValue key="font" value="lcQuestFont" />
+                  <KeyValue key="header_font" value="lcQuestTitleFont" />
+                  <KeyValue key="header_highlight_font" value="lcQuestTitleHighlight" />
                   <KeyValue key="interactive" value="true" type="boolean" />
                   <KeyValue key="leftPadding" value="20" type="number" />
                   <KeyValue key="topPadding" value="20" type="number" />
@@ -290,7 +213,7 @@
                     <Anchor point="TOPRIGHT" x="-25" y="-20"/>
                   </Anchors>
                 </Texture>      
-                <MaskTexture file="Interface\AddOns\LevelingChronicle\UI\Textures\stamp_mask.tga">
+                <MaskTexture file="Interface\AddOns\Journey\UI\Textures\stamp_mask.tga">
                   <Size x="200" y="200" />
                   <Anchors>
                     <Anchor point="TOPRIGHT" x="-25" y="-20"/>
@@ -301,7 +224,7 @@
                 </MaskTexture>
               </Layer>
               <Layer level="BACKGROUND">
-                <Texture parentkey="background" file="Interface\AddOns\LevelingChronicle\UI\Textures\QuestBackgroundClassic_edited.tga" alphaMode="BLEND">
+                <Texture parentkey="background" file="Interface\AddOns\Journey\UI\Textures\QuestBackgroundClassic_edited.tga" alphaMode="BLEND">
                   <Anchors>
                     <Anchor point="TOPLEFT"/>
                     <Anchor point="BOTTOMRIGHT"/>
@@ -344,13 +267,13 @@
               </Frame>
               
               <Frame parentKey="divider">
-                <Size x="200" y="9" />
+                <Size x="125" y="20" />
                 <Anchors>
                   <Anchor point="CENTER"/>
                 </Anchors>
                 <Layers>
                   <Layer level="ARTWORK">
-                    <Texture inherits="TextDividerTemplate">
+                    <Texture parentKey="texture" inherits="TextDividerTemplate">
                       <Anchors>
                         <Anchor point="TOPLEFT" />
                         <Anchor point="BOTTOMRIGHT" />
@@ -452,7 +375,7 @@
               
               <Frame parentKey="summary" inherits="SleepyTextList">
                 <KeyValues>
-                  <KeyValue key="font" value="QuestFont" />
+                  <KeyValue key="font" value="lcQuestFont" />
                   <KeyValue key="topPadding" value="40" type="number" />
                   <KeyValue key="leftPadding" value="15" type="number" />
                   <KeyValue key="rightPadding" value="15" type="number" />
@@ -465,9 +388,9 @@
               </Frame>
               
               <Frame parentKey="xp_source_table" inherits="SleepyTable">
-                <Size x="400" y="250" />
+                <Size x="400" y="220" />
                 <KeyValues>
-                    <KeyValue key="font" value="QuestFont" />
+                    <KeyValue key="font" value="lcQuestFont" />
                     <KeyValue key="num_columns" value="6" type="number" />
                     <KeyValue key="rowPadding" value="5" type="number" />
                     <KeyValue key="leftPadding" value="20" type="number" />
@@ -505,9 +428,6 @@
         </Scripts>
       </Frame> <!--lcCharacterJourneyWidget-->
       
-
-      
-      
       
     </Frames> <!--lcMainWindowContainer-->
 		<Scripts>
@@ -521,8 +441,8 @@
 		  <OnDragStop>
 		    self:StopMovingOrSizing();
 		  </OnDragStop>
-		  <OnUpdate>
-		  </OnUpdate>
+		  <OnShow method="OnShow" />
+      <OnHide method="OnHide" />
 		</Scripts>
 	</Frame>  <!--lcMainWindowContainer-->
 	

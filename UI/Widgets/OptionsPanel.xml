@@ -9,11 +9,34 @@
 			</Layer>
 		</Layers>
     <Frames>
-      <CheckButton parentKey="checkbutton" inherits="SettingsCheckBoxTemplate">
+      <CheckButton parentKey="control" inherits="SettingsCheckBoxTemplate">
         <Anchors>
           <Anchor point="RIGHT" />
         </Anchors>
       </CheckButton>
+    </Frames>
+  </Frame>
+  
+  <Frame name="Options_DropdownControlTemplate" virtual="true">
+    <Size x="280" y="30"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="text" inherits="GameFontNormal" justifyH="LEFT" wordwrap="false"/>
+			</Layer>
+		</Layers>
+    <Frames>
+      <Frame parentKey="control" inherits="SettingsTextDropDownControlTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" x="-125" />
+        </Anchors>
+        <Scripts>
+          <OnLoad inherit="prepend">
+            self.DropDown.DecrementButton:Hide()
+            self.DropDown.IncrementButton:Hide()
+          </OnLoad>
+          
+        </Scripts>
+      </Frame>
     </Frames>
   </Frame>
 
@@ -22,6 +45,7 @@
       <Frame parentKey="controls" setAllPoints="true" inherits="SleepyContainer">
         <KeyValues>
           <KeyValue key="layout" value="List" />
+          <KeyValue key="rowPadding" value="10" type="number" />
         </KeyValues>
       </Frame>
     </Frames>

@@ -1,7 +1,7 @@
 LuaCore = {}
 
-function require()
-  return nil
-end
+require = require or function()
+                       return nil
+                     end
 
 return LuaCore

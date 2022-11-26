@@ -1,11 +1,15 @@
 local lc = require('Utils.Constants') or LevelingChronicle
 
+local table_utils = require('Libs.LuaCore.Utils.TableUtils') or LCTableUtils
+
 local da = require('Utils.DataAccess') or lc.DataAccess
 local oda = require('Utils.OptionsDataAccess') or lc.OptionsDataAccess
 local Character = require('Objects.Character') or lc.Character
 
 lc.DataServices = {}
 local ds = lc.DataServices
+
+local cache = {}
 
 function ds.initializeDatabase()
   da.initializeDatabase()
@@ -39,6 +43,30 @@ function ds.getAllCharacters()
   for k,v in pairs(character_records) do
     res[k] = Character:new(v.unit_data)
   end
+  
+  return res
+end
+
+--return sum of data from the last num_sessions (default all)
+function ds.getAggregatedSessionStats(guid, num_sessions)
+  local cache_key = "sessions-aggregate-"..guid.."-"..(num_sessions or "")
+  if (cache[cache_key]) then
+    return cache[cache_key]
+  end
+  
+  local sessions = da.getCharacterSessions(guid)
+  if (#sessions == 0) then
+    return nil
+  end
+  
+  local res = {}
+  local lower_bound = (not num_sessions and 1) or (#sessions - num_sessions + 1)
+  lower_bound = lower_bound > 0 and lower_bound or 1
+  for i=#sessions,lower_bound,-1 do
+      res = table_utils.addTables(res, sessions[i])
+  end
+  
+  cache[cache_key] = res
   
   return res
 end

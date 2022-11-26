@@ -14,13 +14,17 @@ function lcMainWindowMixin:InitializeRpModeButton(rp_mode_on)
   lc.UI.State.rp_mode_on = rp_mode_on
 end
 
-function lcMainWindowMixin:InfoButton_OnClick(button)
-  UI.Widgets.InfoWidget:Open()
+function lcMainWindowMixin:OnShow()
+  lc.UI.State.main_window_shown = true
+  UI.Controller.loadMainWindow()
+end
+
+function lcMainWindowMixin:OnHide()
+  lc.UI.State.main_window_shown = false
 end
 
 function lcMainWindowMixin:OnLoad()
   UI.Widgets.MainWindow = self
   
-  --self:SetBackdrop(UI.Definitions.BACKDROP_MAIN_WINDOW)
   NineSliceUtil.ApplyLayout(self, NineSliceLayouts.WoodenNeutralFrameTemplate)
 end

@@ -1,6 +1,6 @@
 local lt = require('Libs.LuaTesting.LuaTesting')
 
-local lc = require('LevelingChronicle') or LevelingChronicle
+local lc = require('Journey') or LevelingChronicle
 local evf = require('Libs.WowEventFramework.WowEventFramework')
 local table_utils = require('Libs.LuaCore.Utils.TableUtils')
 
@@ -50,7 +50,7 @@ function TestRecorder:testRecorderRunsSuccessfully()
   lu.assertEquals(stats.kill_xp_gained, 22)
   
   lu.assertEquals(stats.num_quests_completed, 1)
-  lu.assertEquals(stats.num_player_kills, 1)
+  lu.assertEquals(stats.num_kills, 1)
   
   lu.assertNotNil(recorder.session.end_time)
 end

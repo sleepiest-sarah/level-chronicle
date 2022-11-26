@@ -92,8 +92,10 @@ function CharacterJourneyBookmarkMixin:Refresh(model)
     
     local num_bookmarks = math.floor(#level_range / 10)
     local levels = {}
-    for i=1,num_bookmarks do
-      table.insert(levels, tostring(i*10))
+    for i,level in ipairs(level_range) do
+      if (level % 10 == 0) then
+        table.insert(levels, tostring(level))
+      end
     end
     
     local buttons = {}

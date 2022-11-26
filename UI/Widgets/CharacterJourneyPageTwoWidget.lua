@@ -47,6 +47,9 @@ end
 function CharacterJourneyPageTwoMixin:Refresh(model)
   self.divider:Show()
   
+  local divider_coords = UI.Definitions.TEXT_DIVIDERS[math_utils.rand(1,#UI.Definitions.TEXT_DIVIDERS, model.page_seed)]
+  self.divider.texture:SetTexCoord(divider_coords.left, divider_coords.right, divider_coords.top, divider_coords.bottom)
+  
   if (model.stats_by_level[2]) then
     setEntryData(self.entryTwo, model.stats_by_level[2])
   else
@@ -58,6 +61,10 @@ function CharacterJourneyPageTwoMixin:Refresh(model)
     setEntryData(self.entryOne, model.stats_by_level[1])
   else
     setEntryData(self.entryOne, nil)
+  end
+  
+  if (model.total_pages == 0) then
+    self.entryOne.summary:SetTableItems({{{text = lc.UI.Strings.Empty_Journey_Text, colspan = 2, justifyh = "LEFT"}}})
   end
   
 end

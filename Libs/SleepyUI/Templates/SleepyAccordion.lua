@@ -52,6 +52,7 @@ function SleepyAccordionMixin:SetAccordionItems(items)
     headerFrame.header = true
     headerFrame.expanded = false
     headerFrame:SetNormalFontObject(self.header_font or self.font)
+    headerFrame:SetHighlightFontObject(self.header_highlight_font or self.font)
     headerFrame:SetText(header.text)
     
     self:OnAcquire(headerFrame)

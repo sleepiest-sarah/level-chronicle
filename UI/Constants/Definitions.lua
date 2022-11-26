@@ -2,6 +2,8 @@ local lc = LevelingChronicle
 
 lc.UI.Definitions = {}
 
+local texture_path = "Interface\\AddOns\\"..lc.ADDON_NAME.."\\UI\\Textures"
+
 lc.UI.Definitions.BACKDROP_DEFAULT = {
   bgFile="Interface\\DialogFrame\\UI-DialogBox-Background",
   edgeFile="Interface\\Tooltips\\UI-Tooltip-Border",
@@ -31,13 +33,13 @@ lc.UI.Definitions.BACKDROP_MAIN_WINDOW = {
 lc.UI.Definitions.RECORDER_RUNNING_COLOR = {0, 1, 0.3}
 lc.UI.Definitions.RECORDER_STANDBY_COLOR = {1, .82, 0}
 
-lc.UI.Definitions.PAUSE_ICON_PATH = "Interface\\AddOns\\LevelingChronicle\\UI\\Textures\\pause_icon_squared.tga"
-lc.UI.Definitions.PLAY_ICON_PATH = "Interface\\AddOns\\LevelingChronicle\\UI\\Textures\\play_icon_squared.tga"
+lc.UI.Definitions.PAUSE_ICON_PATH = "Interface\\AddOns\\Journey\\UI\\Textures\\pause_icon_squared.tga"
+lc.UI.Definitions.PLAY_ICON_PATH = "Interface\\AddOns\\Journey\\UI\\Textures\\play_icon_squared.tga"
 
-lc.UI.Definitions.DRAWN_EXPAND_ICON_PATH = "Interface\\AddOns\\LevelingChronicle\\UI\\Textures\\expand_icon.tga"
-lc.UI.Definitions.DRAWN_EXPAND_HIGHLIGHT_PATH = "Interface\\AddOns\\LevelingChronicle\\UI\\Textures\\expand_icon_highlight.tga"
-lc.UI.Definitions.DRAWN_COLLAPSE_ICON_PATH = "Interface\\AddOns\\LevelingChronicle\\UI\\Textures\\collapse_icon.tga"
-lc.UI.Definitions.DRAWN_COLLAPSE_HIGHLIGHT_PATH = "Interface\\AddOns\\LevelingChronicle\\UI\\Textures\\collapse_icon_highlight.tga"
+lc.UI.Definitions.DRAWN_EXPAND_ICON_PATH = "Interface\\AddOns\\Journey\\UI\\Textures\\expand_icon.tga"
+lc.UI.Definitions.DRAWN_EXPAND_HIGHLIGHT_PATH = "Interface\\AddOns\\Journey\\UI\\Textures\\expand_icon_highlight.tga"
+lc.UI.Definitions.DRAWN_COLLAPSE_ICON_PATH = "Interface\\AddOns\\Journey\\UI\\Textures\\collapse_icon.tga"
+lc.UI.Definitions.DRAWN_COLLAPSE_HIGHLIGHT_PATH = "Interface\\AddOns\\Journey\\UI\\Textures\\collapse_icon_highlight.tga"
 
 lc.UI.Definitions.DEFAULT_JOURNAL_BACKGROUND_COORDS = {left = 0, right = .5879, top = 0, bottom = .8008}
 
@@ -128,8 +130,22 @@ lc.UI.Definitions.JOURNAL_STAMPS = {
   {file = "Interface\\ARCHEOLOGY\\ArchRare-TrollDrum", coords = {left=0.3301, right=0.7012, top=0.0508, bottom=.8164}},
 }
 
+lc.UI.Definitions.TEXT_DIVIDERS = {
+    {left=0.0376, right=0.2480, top=0.0781, bottom=.2383},
+    {left=0.0376, right=0.2480, top=0.3164, bottom=.5078},
+    {left=0.0376, right=0.2480, top=0.6348, bottom=.7881},
+    {left=0.3013, right=0.6885, top=0.0508, bottom=.2324},
+    {left=0.3013, right=0.6885, top=0.3418, bottom=.5352},
+    {left=0.3013, right=0.6885, top=0.6152, bottom=.8008},
+    {left=0.7373, right=0.9278, top=0.1445, bottom=.2871},
+    {left=0.7271, right=0.9385, top=0.3242, bottom=.4434},
+    {left=0.7134, right=0.9634, top=0.5820, bottom=.7305},
+  }
+
+-- TODO
 lc.UI.Definitions.Options = {
-    {text = lc.UI.Strings.Options_MinimapShow, key = "minimap_show"},
-    {text = lc.UI.Strings.Options_ShowOnLogin, key = "show_monitor_on_login"},
-    {text = lc.UI.Strings.Options_ContinuousTimer, key="continuous_timer"},
+    {text = lc.UI.Strings.Options_ContinuousTimer, control="checkbox", key="continuous_timer", tooltip = lc.UI.Strings.Options_ContinuousTimer_Tooltip},
+    {text = lc.UI.Strings.Options_ShowOnLogin, control="checkbox", key = "show_monitor_on_login", tooltip = lc.UI.Strings.Options_ShowOnLogin_Tooltip},
+    {text = lc.UI.Strings.Options_MinimapShow, control="dropdown", key = "minimap_show",
+      selections = {lc.UI.Strings.Options_MinimapShow_Always, lc.UI.Strings.Options_MinimapShow_Only_Sub_Max, lc.UI.Strings.Options_MinimapShow_Never}},
   }

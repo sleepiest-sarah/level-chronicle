@@ -11,14 +11,21 @@ rt.stats_record_template = {
     gathering_xp_gained = 0,
     other_xp_gained = 0,
     quest_xp_gained = 0,
-    kill_xp_gained = 0,
+    kill_xp_raw_gained = 0,             -- experience gained from kills without rested or group bonus xp
+    kill_xp_gained = 0,                  -- raw + rested
+    kill_xp_instance_gained = 0,        -- xp with bonuses from kills in a party instance
+    kill_xp_raw_instance_gained = 0,    -- xp + group bonus from kills; raw because group bonus is unavoidable
+    kill_xp_world_gained = 0,           -- xp with bonuses from kills in the over world
+    kill_xp_raw_world_gained = 0,       -- xp from kills in the over world without rested or group bonus xp
     battleground_xp_gained = 0,
     scenario_xp_gained = 0,
     bonus_rested_xp_gained = 0,
     bonus_group_xp_gained = 0,
     num_quests_completed = 0,
     num_scenarios_completed = 0,
-    num_player_kills = 0,
+    num_kills = 0,                      -- total kills = instance + world
+    num_kills_instance = 0,             -- kills in a party instance
+    num_kills_world = 0,                -- kills in the over world
     num_gathers = 0,
     num_pet_battles = 0,
     num_battlegrounds_completed = 0,
@@ -76,7 +83,7 @@ rt.character_record_template = {
           }
       },
     options = {
-        minimap_show = true,
+        minimap_show = lc.SHOW_MINIMAP_BUTTON_ALWAYS,
         show_monitor_on_login = true,
         continuous_timer = true,
       },

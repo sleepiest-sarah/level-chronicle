@@ -55,14 +55,21 @@ local function closeRecorder()
   end
 end
 
+function manager.isRecorderStarted()
+  return recorder.started and (recorder.session.elapsed_time > 0 or recorder.recording)
+end
+
 function manager.getRunningSessionData()
   return table_utils.deepCopy(recorder.session), char, recorder.started, recorder.recording
+end
+
+function manager.getCurrentCharacter()
+  return char
 end
 
 function manager.stopRecorder()
   recorder.stop()
 end
-
 
 ef.registerEvent("PLAYER_LOGIN", init)
 ef.registerEvent("PLAYER_LOGOUT", closeRecorder)

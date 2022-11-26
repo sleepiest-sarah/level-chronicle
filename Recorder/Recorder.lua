@@ -20,14 +20,11 @@ local timestamps = {
     gathering = -math.huge,
     scenario_completed = -math.huge,
     pet_battle_started = -math.huge,
-    battleground_started = -math.huge,
     scenario_started = -math.huge
   }
   
 local function sanityCheckValue(key, delta)
-  if (key == "time_battlegrounds") then
-    return delta < 5400
-  elseif (key == "time_scenarios") then
+  if (key == "time_scenarios") then
     return delta < 3600
   elseif (key == "time_pet_battles") then
     return delta < 1200
@@ -96,43 +93,61 @@ end
 
 --TODO check for war mode bonus xp
 local function playerQuestTurnedIn(event, questId, xp, money)
-
-  if (xp) then
+  if (xp and xp > 0) then
     incrementStat("quest_xp_gained", xp)
     timestamps.quest_completed = time_utils.systemTime()
+    
+    incrementStat("num_quests_completed", 1)
   end
-  
-  incrementStat("num_quests_completed", 1)
 end
 
 --TODO check for war mode bonus xp
 local function playerMsgCombatXpGain(event, ...)
   local msg = ...
   
-  local xp_gain = string.match(msg, "dies, you gain (%d+) experience.")
-  if (xp_gain) then
-    incrementStat("kill_xp_gained", xp_gain)
-    timestamps.player_kill = time_utils.systemTime()
-  end
-  
   local rested_xp = string.match(msg, "%+(%d+) exp Rested bonus")
   if (rested_xp) then
-    incrementStat("bonus_rested_xp_gained", tonumber(rested_xp))
+    incrementStat("bonus_rested_xp_gained", rested_xp)
   end
   
   local group_xp = string.match(msg, "%+(%d+) group bonus")
   if (group_xp) then
-    incrementStat("bonus_group_xp_gained", tonumber(group_xp))
+    incrementStat("bonus_group_xp_gained", group_xp)
   end
   
-  incrementStat("num_player_kills", 1)
+  local xp_gain = string.match(msg, "dies, you gain (%d+) experience.")
+  if (xp_gain) then
+    incrementStat("kill_xp_gained", xp_gain)
+    incrementStat("num_kills", 1)
+    
+    group_xp = group_xp or 0
+    rested_xp = rested_xp or 0
+    incrementStat("kill_xp_raw_gained", xp_gain - rested_xp)
+    
+    local inInstance, instanceType = IsInInstance()
+    if (instanceType == "party") then
+      incrementStat("kill_xp_raw_instance_gained", xp_gain - rested_xp)
+      incrementStat("kill_xp_instance_gained", xp_gain)
+      incrementStat("num_kills_instance", 1)
+    else
+      incrementStat("kill_xp_raw_world_gained", xp_gain - rested_xp)
+      incrementStat("kill_xp_world_gained", xp_gain)
+      incrementStat("num_kills_world", 1)      
+    end
+    
+    timestamps.player_kill = time_utils.systemTime()
+  end
+  
 end
 
+-- PET_BATTLE_CLOSE gets called twice. could use PET_BATTLE_OVER but the gap between that and PLAYER_XP_UPDATE is significant
+-- TODO only count experience granting pet battles
 local function petBattleClose()
-  timestamps.pet_battle_finished = time_utils.systemTime()
-  incrementStat("num_pet_battles", 1)
   local delta = time_utils.systemTime() - timestamps.pet_battle_started
   if (sanityCheckValue("time_pet_battles", delta)) then
+    timestamps.pet_battle_finished = time_utils.systemTime()
+    
+    incrementStat("num_pet_battles", 1)    
     incrementStat("time_pet_battles", delta)
     timestamps.pet_battle_started = -math.huge
   end
@@ -166,28 +181,19 @@ local function chatMsgOpening(event, msg)
   
   if (mining or herbing) then
     timestamps.gathering = time_utils.systemTime()
+    incrementStat("num_gathers", 1)
   end
 end
 
-local function playerBattlegroundComplete(event)
+local function playerBattlegroundComplete(event, winner, duration)
   if (C_PvP.IsBattleground()) then
-    local delta = time_utils.systemTime() - timestamps.battleground_started
-    if (sanityCheckValue("time_battlegrounds", delta)) then
-      incrementStat("num_battlegrounds_completed", 1)
-      incrementStat("time_battlegrounds", delta)
-      timestamps.battleground_started = -math.huge
-    end
+    incrementStat("num_battlegrounds_completed", 1)
+    incrementStat("time_battlegrounds", duration)
   end
-end
-
-local function playerEnteringBattleground(event)
-  if (C_PvP.IsBattleground()) then
-    timestamps.battleground_started = time_utils.systemTime()
-  end 
 end
 
 local function playerEnteringWorld(event, isInitialLogin, isReloadingUi)
-  local name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceMapID, instanceGroupSize, lfgDungeonID = GetInstanceInfo()
+  local name, instanceType = GetInstanceInfo()
   if (instanceType == "party") then
     timestamps.scenario_started = time_utils.systemTime()
   end
@@ -211,6 +217,8 @@ function recorder.onEvent(event, ...)
   elseif (event == "SCENARIO_COMPLETED") then
     playerScenarioCompleted(event, ...)
   end
+  
+  ef.triggerCustomEvent(lc.Event.SESSION_DATA_CHANGED)
 end
 
 function recorder.refresh()
@@ -246,6 +254,8 @@ function recorder.start()
   session.events = {levels = {}}
   
   recorder.inactivity_timer = C_Timer.NewTimer(lc.INACTIVITY_PAUSE_AFTER, recorder.stop)
+  
+  ef.triggerCustomEvent(lc.Event.SESSION_DATA_CHANGED)
 end
 
 function recorder.stop()
@@ -255,6 +265,8 @@ function recorder.stop()
     recorder.inactivity_timer:Cancel()
   end
   recorder.inactivity_timer = nil
+  
+  ef.triggerCustomEvent(lc.Event.SESSION_DATA_CHANGED)
 end
 
 function recorder.close()
@@ -283,12 +295,11 @@ function recorder.initialize(character)
   ef.registerEvent("QUEST_TURNED_IN", recorder.onEvent)
   ef.registerEvent("PLAYER_LEVEL_UP", recorder.onEvent)
   ef.registerEvent("CHAT_MSG_OPENING", recorder.onEvent)
-  ef.registerEvent("SCENARIO_COMPLETED", recorder.OnEvent)
+  ef.registerEvent("SCENARIO_COMPLETED", recorder.onEvent)
   
   --want to capture these even if experience hasn't been received recently
   ef.registerEvent("PET_BATTLE_CLOSE", petBattleClose)
   ef.registerEvent("PVP_MATCH_COMPLETE", playerBattlegroundComplete)
-  ef.registerEvent("PLAYER_ENTERING_BATTLEGROUND", playerEnteringBattleground)
   ef.registerEvent("PLAYER_ENTERING_WORLD", playerEnteringWorld)
   ef.registerEvent("PET_BATTLE_OPENING_DONE", petBattleStart)
 end
