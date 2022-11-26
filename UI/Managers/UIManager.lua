@@ -235,38 +235,38 @@ function m.buildSessionMonitorModel()
   model.recorder_running = recorder_running
   
   local recent_stats = ds.getAggregatedSessionStats(char.guid, 10)
-  local current_stats = table_utils.addTables(session.stats, recent_stats)
+  local current_stats = recent_stats and table_utils.addTables(session.stats, recent_stats) or session.stats
+  recent_stats = recent_stats or session.stats -- current is the average if there's only one session
   
-  if (recent_stats) then
+  local faux_elapsed_time = (recent_stats.elapsed_time < lc.ELAPSED_TIME_EASING and lc.ELAPSED_TIME_EASING) or recent_stats.elapsed_time
+  local average_calc_stats = calc.calculateSessionStats(recent_stats, faux_elapsed_time, char)
+  
+  model.average_xp_rate = math_utils.getFormattedUnitString(average_calc_stats.xp_rate * 3600, "integer/hour")
+  
+  model.avg_time_to_level = string_utils.getTimerFormat(average_calc_stats.time_to_level)
+  
+  model.num_to_level = calc.calculateToLevelNumbers(current_stats, char)
+  
+  for k,v in pairs(model.num_to_level) do
+    model.num_to_level[k] = math.ceil(v)
+  end
+  
+  if (session) then
+    model.elapsed_time = session.elapsed_time
+    model.elapsed_time_string = string_utils.getTimerFormat(session.elapsed_time)
     
-    model.average_xp_rate = math_utils.getFormattedUnitString(math_utils.safediv(recent_stats.total_xp_gained,recent_stats.elapsed_time) * 3600, "integer/hour")
+    local delta = recorder_running and (LCTimeUtils.systemTime() - session.current_time) or 0
+    model.live_timer_string = string_utils.getTimerFormat(session.elapsed_time + delta)
     
-    local average_calc_stats = calc.calculateSessionStats(recent_stats, recent_stats.elapsed_time, char)
-    model.avg_time_to_level = string_utils.getTimerFormat(average_calc_stats.time_to_level)
+    model.xp_gained = session.stats.total_xp_gained
     
-    model.num_to_level = calc.calculateToLevelNumbers(current_stats, char)
+    faux_elapsed_time = (session.elapsed_time < lc.ELAPSED_TIME_EASING and lc.ELAPSED_TIME_EASING) or session.elapsed_time
+    local session_calculated_stats = calc.calculateSessionStats(session.stats, faux_elapsed_time, char)
     
-    for k,v in pairs(model.num_to_level) do
-      model.num_to_level[k] = math.ceil(v)
-    end
-    
-    if (session) then
-      model.elapsed_time = session.elapsed_time
-      model.elapsed_time_string = string_utils.getTimerFormat(session.elapsed_time)
-      
-      local delta = recorder_running and (LCTimeUtils.systemTime() - session.current_time) or 0
-      model.live_timer_string = string_utils.getTimerFormat(session.elapsed_time + delta)
-      
-      model.xp_gained = session.stats.total_xp_gained
-      
-      local faux_elapsed_time = (session.elapsed_time < lc.ELAPSED_TIME_EASING and lc.ELAPSED_TIME_EASING) or session.elapsed_time
-      local session_calculated_stats = calc.calculateSessionStats(session.stats, faux_elapsed_time, char)
-      
-      model.xp_rate = math_utils.getFormattedUnitString(session_calculated_stats.xp_rate * 3600, "integer/hour")
-      model.rested_xp_time_saved = math_utils.getFormattedUnitString(session_calculated_stats.rested_xp_time_saved, "time")
+    model.xp_rate = math_utils.getFormattedUnitString(session_calculated_stats.xp_rate * 3600, "integer/hour")
+    model.rested_xp_time_saved = math_utils.getFormattedUnitString(session_calculated_stats.rested_xp_time_saved, "time")
 
-      model.time_to_level_timer = string_utils.getTimerFormat(session_calculated_stats.time_to_level)
-    end
+    model.time_to_level_timer = string_utils.getTimerFormat(session_calculated_stats.time_to_level)
   end
   
   volatile_cache[cache_key] = model

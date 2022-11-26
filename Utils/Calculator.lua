@@ -10,14 +10,14 @@ local m = lc.Calculator
 
 function m.calculateSessionStats(stats, elapsed_time, char)
   local res = {}
-  elapsed_time = elapsed_time == 0 and 1 or elapsed_time
+  elapsed_time = elapsed_time or 0
   
   res.xp_rate = safediv(stats.total_xp_gained,elapsed_time)
-  res.pct_levels_rate = (stats.pct_levels_gained or 0) / elapsed_time
+  res.pct_levels_rate = safediv(stats.pct_levels_gained, elapsed_time)
   
-  local total_xp_no_rested = stats.total_xp_gained - stats.bonus_rested_xp_gained
-  local total_xp_no_rested_rate = total_xp_no_rested / elapsed_time
-  res.rested_xp_time_saved = stats.bonus_rested_xp_gained / total_xp_no_rested_rate
+  local total_xp_no_rested = safesub(stats.total_xp_gained, stats.bonus_rested_xp_gained)
+  local total_xp_no_rested_rate = safediv(total_xp_no_rested, elapsed_time)
+  res.rested_xp_time_saved = safediv(stats.bonus_rested_xp_gained, total_xp_no_rested_rate)
   
   res.time_to_level = res.xp_rate == 0 and nil or ((char.max_xp - char.xp) / res.xp_rate)
   

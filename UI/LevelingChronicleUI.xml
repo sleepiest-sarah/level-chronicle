@@ -17,7 +17,7 @@
   <Frame name="lcMainWindowContainer" toplevel="true" mixin="lcMainWindowMixin" movable="true" enableMouse="true" hidden="true" clampedToScreen="true">
 		<Size x="1150" y="620" />
 		<Anchors>
-			<Anchor point="CENTER" x="500" y="-104" />
+			<Anchor point="CENTER"/>
 		</Anchors>
 		<HitRectInsets left="0" right="0" top="0" bottom="0"/>
     <Layers>
