@@ -5,9 +5,9 @@
 <Script file="Logging\Logger.lua"/>
 
 <Script file="Utils\MathUtils.lua"/>
+<Script file="Utils\TimeUtils.lua"/>
 <Script file="Utils\StringUtils.lua"/>
 <Script file="Utils\TableUtils.lua"/>
 <Script file="Utils\WowUtils.lua"/>
-<Script file="Utils\TimeUtils.lua"/>
 
 </Ui>
