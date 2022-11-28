@@ -6,7 +6,7 @@ local string_utils = require('Libs.LuaCore.Utils.StringUtils') or LCStringUtils
 local wow_utils = require('Libs.LuaCore.Utils.WowUtils') or LCWowUtils
 
 local ds = require('Utils.DataServices') or lc.DataServices
-local ui_ds = require('UI.Managers.UIDataServices') or lc.UI.UIDataServices
+local udb = require('UI.Managers.UIDataBroker') or lc.UI.UIDataBroker
 local rm = require('Recorder.RecorderManager') or lc.RecorderManager
 local calc = require('Utils.Calculator') or lc.Calculator
 
@@ -90,9 +90,12 @@ end
 
 function m.buildCharacterJourneyModel(character_guid, page, page_size)
   local model = {}
+  
   model.char = ds.getCharacter(character_guid)
-  local level_events = ds.getCharacterLevelEvents(character_guid)
-  local stats_by_level = ds.getCharacterStatsByLevel(character_guid)
+  
+  local level_events =  udb.getCharacterLevelEvents(character_guid)
+  local stats_by_level =  udb.getCharacterStatsByLevel(character_guid)
+  
   local sorted_keys = table_utils.getKeys(stats_by_level)
   table.sort(sorted_keys, function (a,b) return tonumber(b) > tonumber(a) end)
   
@@ -121,7 +124,7 @@ function m.buildCharacterJourneyModel(character_guid, page, page_size)
     elseif (volatile_cache[cache_key]) then --current level
       table.insert(model.stats_by_level, volatile_cache[cache_key])
     else
-      local stats = ui_ds.getCharacterLevelStats(character_guid, level)
+      local stats = stats_by_level[level]
 
       local level_model = {
           pet_battle_xp_gained = stats.pet_battle_xp_gained,
@@ -135,7 +138,9 @@ function m.buildCharacterJourneyModel(character_guid, page, page_size)
           level_seed = model.seed + level,
         }
         
-      local pct_per_event = calc.calculatePctLevelPerEvent(stats)
+      -- total_xp_gained isn't accurate if this is the character's current level
+      local max_xp = tostring(model.char.level) == level and model.char.max_xp or stats.total_xp_gained
+      local pct_per_event = calc.calculatePctLevelPerEvent(stats, max_xp)
       
       level_model.activity_stats = {
           kill = 0,
@@ -163,7 +168,7 @@ function m.buildCharacterJourneyModel(character_guid, page, page_size)
       level_model.xp_rate = math_utils.getFormattedUnitString(calc_stats.xp_rate * 3600, "integer/hour")
       level_model.rested_xp_time_saved = calc_stats.rested_xp_time_saved
       
-      if (tonumber(level) == model.char.level) then
+      if (level == tostring(model.char.level)) then
         volatile_cache[cache_key] = level_model
       else
         static_cache[cache_key] = level_model
@@ -179,7 +184,7 @@ end
 function m.buildCharacterStatsModel(character_guid)
   local model = {}
   model.char = ds.getCharacter(character_guid)
-  local overall_stats = ui_ds.getCharacterOverallStats(character_guid)
+  local overall_stats = udb.getCharacterOverallStats(character_guid)
   
   model.elapsed_time = overall_stats.elapsed_time
   
@@ -207,11 +212,11 @@ function m.buildCharacterStatsModel(character_guid)
       tab = model.xp_sources
     end
     
-    tab[k] = { pct = math_utils.getFormattedUnitString(v, "percent"),
-                            rate = math_utils.getFormattedUnitString(activity_xp_rates[k] * 3600, "integer/hour"),
-                            per = (per == "0.00%" and "<0.01%") or per,
-                            num = overall_stats[num_event_keys[k]]
-                          }
+    tab[k] = {pct = math_utils.getFormattedUnitString(v, "percent"),
+              rate = math_utils.getFormattedUnitString(activity_xp_rates[k] * 3600, "integer/hour"),
+              per = (per == "0.00%" and "<0.01%") or per,
+              num = overall_stats[num_event_keys[k]]
+            }
   end
   
   return model
@@ -285,5 +290,6 @@ function m.pauseRecorder()
 end
 
 WowEventFramework.registerCustomEvent(lc.Event.SESSION_DATA_CHANGED, clearCache)
+WowEventFramework.registerCustomEvent(lc.Event.PLAYER_LEVEL_UP, clearCache)
 
 return m

@@ -6,7 +6,7 @@
   
   <Include file="Formatters\Formatters.xml" />
   
-  <Script file="Managers\UIDataServices.lua" />
+  <Script file="Managers\UIDataBroker.lua" />
   <Script file="Managers\UIManager.lua"/>
   <Script file="Managers\UIController.lua" />
   <Script file="LevelingChronicleUI.lua"/>

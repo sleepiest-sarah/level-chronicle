@@ -12,6 +12,12 @@ local replayer = require('EventVCR.Replayer')
 
 local lu = require('luaunit')
 
+require('UI.Constants.UIConstants')
+require('UI.Constants.Strings')
+require('UI.Constants.Definitions')
+require('UI.Constants.ModelTemplates')
+local ui_manager = require('UI.Managers.UIManager')
+
 IntegrationTests = {}
 
 function IntegrationTests:tearDown()
@@ -45,7 +51,7 @@ function IntegrationTests:testPetBattleReel()
   
   local session_record = lcCharacterDb.characters["Player-3678-0CD16205"].sessions[1]
   
-  lu.assertEquals(session_record.num_player_kills, 0)
+  lu.assertEquals(session_record.num_kills, 0)
   lu.assertEquals(session_record.num_pet_battles, 2)
   lu.assertEquals(session_record.pet_battle_xp_gained, 367)
   lu.assertEquals(session_record.total_xp_gained, 367)
@@ -60,7 +66,7 @@ function IntegrationTests:testBattlegroundReel()
   
   local session_record = lcCharacterDb.characters["Player-3678-0CD16205"].sessions[1]
   
-  lu.assertEquals(session_record.num_player_kills, 0)
+  lu.assertEquals(session_record.num_kills, 0)
   lu.assertEquals(session_record.num_pet_battles, 1)
   lu.assertEquals(session_record.num_battlegrounds_completed, 1)
   lu.assertEquals(session_record.num_quests_completed, 2)
@@ -83,6 +89,8 @@ function IntegrationTests:testDungeonReel()
   replayer.play(dungeon_reel, lt.fireEvent)
   
   local session_record = lcCharacterDb.characters["Player-3678-0CD16205"].sessions[1]  
+  
+  local model = ui_manager.buildCharacterJourneyModel("Player-3678-0CD16205", 2, 2)  
   
   lu.assertEquals(session_record.num_kills, 75)
   lu.assertEquals(session_record.num_kills_instance, 75)

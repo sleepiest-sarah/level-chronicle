@@ -28,7 +28,7 @@ function f:format()
       row[5] = {text = source.per}
       self:append(row)
       
-      if (k == "scenario") then
+      if (k == "scenario" and m.dungeon_xp_sources.kill_instance.pct ~= "0%" and m.dungeon_xp_sources.scenario_bonus.pct ~= "0%") then
         row = {}
         row[1] = {text = self.dict.kill_instance, colspan = 2, justifyh="LEFT"}
         row[2] = {text = m.dungeon_xp_sources.kill_instance.pct}

@@ -43,6 +43,10 @@ function GetTime()
   return os.clock()
 end
 
+function date(...)
+  return os.date(...)
+end
+
 function CombatLogGetCurrentEventInfo()
   return os.time(), ""
 end

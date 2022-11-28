@@ -99,6 +99,16 @@ function TestTableUtils:testAddTables()
   lu.assertNotIs(res.z, a.z)
   lu.assertNotIs(res.z, b.z)
 end
+
+function TestTableUtils:testShallowCopy()
+  local a = {x = {a = 10, b = 20, c = 1}, y = {a = 5, b = 2, c = 4, d = 4}}
+  
+  local res = tableUtils.shallowCopy(a)
+  
+  lu.assertNotIs(a, res)
+  lu.assertIs(a.x, res.x)
+  lu.assertIs(a.y, res.y)
+end
   
 lu.LuaUnit.verbosity = lu.VERBOSITY_VERBOSE
 lu.LuaUnit.run('TestTableUtils')

@@ -87,21 +87,23 @@ function m.calculateXpPerEvent(stats)
   return res
 end
 
-function m.calculatePctLevelPerEvent(stats)
+function m.calculatePctLevelPerEvent(stats, total_xp)
   local res = {}
   
+  total_xp = total_xp or stats.total_xp_gained
+  
   -- (activity_xp_gained / num_event) / total_xp_gained
-  res.quest = safediv(safediv(stats.quest_xp_gained, stats.num_quests_completed), stats.total_xp_gained)
-  res.gathering = safediv(safediv(stats.gathering_xp_gained, stats.num_gathers), stats.total_xp_gained)
-  res.pet_battle = safediv(safediv(stats.pet_battle_xp_gained, stats.num_pet_battles), stats.total_xp_gained)
-  res.scenario = safediv(safediv(stats.scenario_xp_gained, stats.num_scenarios_completed), stats.total_xp_gained)
-  res.kill_world = safediv(safediv(stats.kill_xp_world_gained, stats.num_kills_world), stats.total_xp_gained)
-  res.kill = safediv(safediv(stats.kill_xp_gained, stats.num_kills), stats.total_xp_gained)
-  res.battleground = safediv(safediv(stats.battleground_xp_gained, stats.num_battlegrounds_completed), stats.total_xp_gained)  
+  res.quest = safediv(safediv(stats.quest_xp_gained, stats.num_quests_completed), total_xp)
+  res.gathering = safediv(safediv(stats.gathering_xp_gained, stats.num_gathers), total_xp)
+  res.pet_battle = safediv(safediv(stats.pet_battle_xp_gained, stats.num_pet_battles), total_xp)
+  res.scenario = safediv(safediv(stats.scenario_xp_gained, stats.num_scenarios_completed), total_xp)
+  res.kill_world = safediv(safediv(stats.kill_xp_world_gained, stats.num_kills_world), total_xp)
+  res.kill = safediv(safediv(stats.kill_xp_gained, stats.num_kills), total_xp)
+  res.battleground = safediv(safediv(stats.battleground_xp_gained, stats.num_battlegrounds_completed), total_xp)  
   
   local scenario_bonus = safesub(stats.scenario_xp_gained,stats.kill_xp_instance_gained)
-  res.scenario_bonus = safediv(safediv(scenario_bonus, stats.num_scenarios_completed), stats.total_xp_gained)
-  res.kill_instance = safediv(safediv(stats.kill_xp_instance_gained, stats.num_kills_instance), stats.total_xp_gained)
+  res.scenario_bonus = safediv(safediv(scenario_bonus, stats.num_scenarios_completed), total_xp)
+  res.kill_instance = safediv(safediv(stats.kill_xp_instance_gained, stats.num_kills_instance), total_xp)
   
   return res
 end

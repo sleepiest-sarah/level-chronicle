@@ -47,6 +47,10 @@ local function saveSessionData(session)
   ds.saveCharacterSession(char, session)
 end
 
+local function saveCurrentCharacter()
+  ds.saveCharacter(char)
+end
+
 local function closeRecorder()
   if (not recorder.closed) then
     recorder.close()
@@ -78,5 +82,7 @@ ef.registerEvent("PLAYER_LOGOUT", closeRecorder)
 --might do something with these for people logged in when expac launches
 ef.registerEvent("MAX_EXPANSION_LEVEL_UPDATED", nil)
 ef.registerEvent("UPDATE_EXPANSION_LEVEL", nil)
+
+ef.registerCustomEvent(lc.Event.PLAYER_LEVEL_UP, saveCurrentCharacter)
 
 return manager

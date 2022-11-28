@@ -160,18 +160,20 @@ end
 local function playerLevelUp(event, newLevel)
   if (newLevel ~= char.level) then
     incrementStat("levels_gained", 1)
-    
+  
     session.events.levels[char.level] = {date_reached = time_utils.unixTime()}
     char.level = newLevel
-    
+    -- TODO convert keys to string OR convert when initializing the character
     if (not session.stats_by_level[char.level]) then
       session.stats_by_level[char.level] = table_utils.shallowCopy(stats_template)
       session.stats_by_level[char.level].elapsed_time = 0
     end
     
     if (newLevel == char.max_level) then
-      recorder.stop() -- close?
+      recorder.stop()
     end
+    
+    ef.triggerCustomEvent(lc.Event.PLAYER_LEVEL_UP, newLevel)
   end
 end
 
