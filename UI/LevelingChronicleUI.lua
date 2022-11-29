@@ -6,6 +6,14 @@ local ef = require('Libs.WowEventFramework.WowEventFramework') or WowEventFramew
 local manager = require('UI.UIManager') or lc.UI.Manager
 local ds = require('Utils.DataServices') or lc.DataServices
 
+-- TODO move to util
+local function isRegionOffScreen(region)
+  local screenWidth, screenHeight = GetScreenWidth(), GetScreenHeight()
+  local left,bottom = region:GetLeft(), region:GetBottom()
+  
+  return (left < 0 or bottom < 0) or (left > screenWidth or bottom > screenHeight)
+end
+
 local function refreshUi()
   if (lc.UI.State.session_monitor_visible) then
     local model = lc.UI.Manager.buildSessionMonitorModel()
@@ -111,6 +119,11 @@ function lc.UI.OpenSessionMonitor(full)
     lc.UI.State.active_session_monitor = lc.UI.State.session_monitor_expanded and lc.UI.Widgets.SessionMonitor or lc.UI.Widgets.MiniSessionMonitor
     
     lc.UI.State.active_session_monitor:Show()
+    
+    if (isRegionOffScreen(lc.UI.State.active_session_monitor)) then
+      lc.UI.State.active_session_monitor:ClearAllPoints()
+      lc.UI.State.active_session_monitor:SetPoint("CENTER")
+    end
 
     refreshUi() --there's some kind of race condition with the initial refresh when the session monitor is opened
     lc.UI.uiRefreshTimer = C_Timer.NewTicker(lc.UI.REFRESH_RATE, refreshUi)

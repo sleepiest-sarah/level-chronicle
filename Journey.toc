@@ -1,7 +1,7 @@
 ## Interface: 10002
 ## Title: Journey
 ## Author: Sarah Mantovani
-## Version: 1.0-beta
+## Version: 1.0-beta-1
 ## SavedVariables: lcCharacterDb, lcOptionsDb
 
 embeds.xml

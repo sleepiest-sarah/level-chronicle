@@ -109,4 +109,4 @@ function IntegrationTests:testDungeonReel()
 end
 
 lu.LuaUnit.verbosity = lu.VERBOSITY_VERBOSE
-lu.LuaUnit.run('IntegrationTests.testDungeonReel')
+lu.LuaUnit.run('IntegrationTests.testPetBattleReel')

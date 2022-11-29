@@ -59,7 +59,16 @@ local function playerExpUpdate(event, unitid)
     
     local inInstance, instanceType = IsInInstance()
     if (inEventWindow(timestamps.pet_battle_finished)) then
-      incrementStat("pet_battle_xp_gained", xp_gain)
+      
+      local delta = timestamps.pet_battle_finished - timestamps.pet_battle_started
+      if (sanityCheckValue("time_pet_battles", delta)) then
+        -- want to do increment stats here so we aren't counting pet battles that don't give xp
+        incrementStat("num_pet_battles", 1)    
+        incrementStat("time_pet_battles", delta)
+        incrementStat("pet_battle_xp_gained", xp_gain)
+      end
+      
+      timestamps.pet_battle_started = -math.huge
     elseif (inEventWindow(timestamps.gathering)) then
       incrementStat("gathering_xp_gained", xp_gain)
     elseif (C_PvP.IsBattleground()) then
@@ -141,16 +150,8 @@ local function playerMsgCombatXpGain(event, ...)
 end
 
 -- PET_BATTLE_CLOSE gets called twice. could use PET_BATTLE_OVER but the gap between that and PLAYER_XP_UPDATE is significant
--- TODO only count experience granting pet battles
 local function petBattleClose()
-  local delta = time_utils.systemTime() - timestamps.pet_battle_started
-  if (sanityCheckValue("time_pet_battles", delta)) then
-    timestamps.pet_battle_finished = time_utils.systemTime()
-    
-    incrementStat("num_pet_battles", 1)    
-    incrementStat("time_pet_battles", delta)
-    timestamps.pet_battle_started = -math.huge
-  end
+  timestamps.pet_battle_finished = time_utils.systemTime()
 end
 
 local function petBattleStart()
