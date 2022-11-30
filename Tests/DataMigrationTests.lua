@@ -21,6 +21,10 @@ function DataMigrationTests:testVersionCompare()
   
   lu.assertFalse(res)
   
+  res = dm.versionCompare("1.0-beta-1", "1.0-beta")
+  
+  lu.assertFalse(res)
+  
   res = dm.versionCompare("1.0-beta-1", "1.0-beta-2")
   
   lu.assertTrue(res)

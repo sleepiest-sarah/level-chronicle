@@ -22,8 +22,8 @@ function m.versionCompare(a,b)
   maturity_a = maturity_a == "alpha" and 1 or maturity_a == "beta" and 2 or 3
   maturity_b = maturity_b == "alpha" and 1 or maturity_b == "beta" and 2 or 3
   
-  build_a = build_a == "" and 999 or tonumber(build_a)
-  build_b = build_b == "" and 999 or tonumber(build_b)
+  build_a = build_a == "" and 0 or tonumber(build_a)
+  build_b = build_b == "" and 0 or tonumber(build_b)
   
   if (version_a == version_b) then
     if (maturity_a == maturity_b) then
