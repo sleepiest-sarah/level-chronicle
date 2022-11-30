@@ -1,7 +1,7 @@
 ## Interface: 10002
 ## Title: Journey
 ## Author: Sarah Mantovani
-## Version: 1.0-beta-1
+## Version: 1.0
 ## SavedVariables: lcCharacterDb, lcOptionsDb
 
 embeds.xml
@@ -11,6 +11,7 @@ Utils\Constants.lua
 Objects\RecordTemplates.lua
 Objects\Character.lua
 
+Utils\DataMigrations.lua
 Utils\DataAccess.lua
 Utils\OptionsDataAccess.lua
 Utils\DataServices.lua

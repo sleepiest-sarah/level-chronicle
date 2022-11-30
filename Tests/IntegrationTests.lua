@@ -55,6 +55,8 @@ function IntegrationTests:testPetBattleReel()
   lu.assertEquals(session_record.num_pet_battles, 2)
   lu.assertEquals(session_record.pet_battle_xp_gained, 367)
   lu.assertEquals(session_record.total_xp_gained, 367)
+  
+  lu.assertEquals(lcCharacterDb.characters["Player-3678-0CD16205"].stats.total.elapsed_time, session_record.elapsed_time)
 end
 
 function IntegrationTests:testBattlegroundReel()

@@ -48,8 +48,9 @@ function m.getTimerFormat(n)
     return "-"
   end
   
-  local sec, min, hour = time_utils.getDurationParts(n)
+  local sec, min, hour, days = time_utils.getDurationParts(n)
   
+  hour = hour + (24 * days)
   hour = hour >= 10 and hour or "0"..hour
   min = min >= 10 and min or "0"..min
   sec = sec >= 10 and sec or "0"..sec

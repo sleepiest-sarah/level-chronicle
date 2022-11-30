@@ -3,14 +3,14 @@
 Journey, referenced as level-chronicle internally, is a World of Warcraft addon that provides a live monitor to measure leveling progress and a historical view of experience statistics.    
 
 #### Dependencies:
-  - LibDBIcon-1.0
-  - SleepyUI
-  - LuaCore
-  - WowEventFramework
+  LibDBIcon-1.0
+  SleepyUI
+  LuaCore
+  WowEventFramework
   
 #### Unit Test Dependencies:
-  - LuaUnit -- must be in luapath
-  - LuaWowTesting -- embedded
+  LuaUnit -- must be in luapath
+  LuaWowTesting -- embedded
 
 
 *The information below is provided as brief guide to Journey and its terminology. This can be viewed in-game under the AddOns tab in the Settings window.*

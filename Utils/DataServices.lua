@@ -5,6 +5,7 @@ local table_utils = require('Libs.LuaCore.Utils.TableUtils') or LCTableUtils
 local da = require('Utils.DataAccess') or lc.DataAccess
 local oda = require('Utils.OptionsDataAccess') or lc.OptionsDataAccess
 local Character = require('Objects.Character') or lc.Character
+local dm = require('Utils.DataMigrations') or lc.DataMigrations
 
 lc.DataServices = {}
 local ds = lc.DataServices
@@ -17,8 +18,9 @@ function ds.initializeDatabase()
   
   local db_version = da.getDatabaseVersion()
   local addon_version = GetAddOnMetadata(lc.ADDON_NAME, "Version")
-  if (db_version < addon_version) then
+  if (dm.versionCompare(db_version, addon_version)) then
     da.updateDatabaseSchema()
+    dm.runDataMigrations(db_version, addon_version)
     da.updateDatabaseVersion(addon_version)
   end
 end

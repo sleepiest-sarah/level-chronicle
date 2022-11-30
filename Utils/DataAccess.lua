@@ -58,7 +58,6 @@ function da.saveSession(char, session)
   
   local stats_record = char_record.stats.total or {}
   stats_record = table_utils.addTables(stats_record, session.stats)
-  stats_record.elapsed_time = (stats_record.elapsed_time or 0) + session.elapsed_time
   
   char_record.stats.total = stats_record
   
@@ -66,7 +65,6 @@ function da.saveSession(char, session)
     local level_string = tostring(level)
     local saved_record = char_record.stats_by_level[level_string] or {}
     saved_record = table_utils.addTables(saved_record, stats)
-    saved_record.elapsed_time = (saved_record.elapsed_time or 0) + stats.elapsed_time
     
     char_record.stats_by_level[level_string] = saved_record
   end

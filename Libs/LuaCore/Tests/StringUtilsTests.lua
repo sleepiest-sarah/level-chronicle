@@ -72,6 +72,10 @@ function TestStringUtils.testConvertToTimerFormat()
   res = stringUtils.getTimerFormat(0)
   
   lu.assertEquals(res, "00:00:00")
+  
+  res = stringUtils.getTimerFormat(105916.292)
+  
+  lu.assertEquals(res, "29:25:16")
 end
 
 function TestStringUtils.testGetLongFormDurationFormat()
