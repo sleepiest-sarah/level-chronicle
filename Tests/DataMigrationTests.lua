@@ -8,36 +8,6 @@ local lu = require('luaunit')
 
 DataMigrationTests = {}
 
-function DataMigrationTests:testVersionCompare()
-  local res = dm.versionCompare("1.0", "1.0-beta-1")
-  
-  lu.assertFalse(res)
-  
-  res = dm.versionCompare("1.0-beta-1", "1.0")
-  
-  lu.assertTrue(res)
-  
-  res = dm.versionCompare("1.0-beta-1", "1.0-beta-1")
-  
-  lu.assertFalse(res)
-  
-  res = dm.versionCompare("1.0-beta-1", "1.0-beta")
-  
-  lu.assertFalse(res)
-  
-  res = dm.versionCompare("1.0-beta-1", "1.0-beta-2")
-  
-  lu.assertTrue(res)
-  
-  res = dm.versionCompare("1.0-alpha-1", "1.0-beta-1")
-  
-  lu.assertTrue(res)
-  
-  res = dm.versionCompare("1.0-beta-3", "1.0-alpha-5")
-  
-  lu.assertFalse(res)
-end
-
 function DataMigrationTests:testRunMigrations()
   lcCharacterDb = {
     characters = {
@@ -59,7 +29,7 @@ function DataMigrationTests:testRunMigrations()
       }
   }
   
-  dm.runDataMigrations("1.0", "1.1-alpha-1")
+  dm.runDataMigrations("1.0", "1.0.1")
   
   lu.assertEquals(lcCharacterDb.characters["test-guid"].stats.total.elapsed_time, 1500)
   

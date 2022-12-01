@@ -18,7 +18,7 @@ function ds.initializeDatabase()
   
   local db_version = da.getDatabaseVersion()
   local addon_version = GetAddOnMetadata(lc.ADDON_NAME, "Version")
-  if (dm.versionCompare(db_version, addon_version)) then
+  if (db_version < addon_version) then
     da.updateDatabaseSchema()
     dm.runDataMigrations(db_version, addon_version)
     da.updateDatabaseVersion(addon_version)
