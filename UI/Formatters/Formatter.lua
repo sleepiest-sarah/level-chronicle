@@ -28,6 +28,10 @@ function Formatter:prepend(s)
   table.insert(self.buffer, 1, s)
 end
 
+function Formatter:insert(s, i)
+  table.insert(self.buffer, i, s)
+end
+
 function Formatter:getRandomSeed()
   return self.model.level_seed
 end

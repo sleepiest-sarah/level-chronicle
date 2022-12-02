@@ -26,7 +26,7 @@ function f:format()
   self:appendKeyValueTableRow("avg_time_to_level", m.avg_time_to_level)
   
   if (m.num_to_level) then
-    self:appendRow({text = self.dict.to_level_header, colspan = 2, font = "lcGameFontNormal"})
+    local header_index = #self.buffer
     
     self:appendKeyValueTableRow("scenarios_to_level", m.num_to_level.scenarios_to_level)
     self:appendKeyValueTableRow("battlegrounds_to_level", m.num_to_level.battlegrounds_to_level)
@@ -43,6 +43,10 @@ function f:format()
     
     self:appendKeyValueTableRow("gathers_to_level", m.num_to_level.gathers_to_level)
     self:appendKeyValueTableRow("pet_battles_to_level", m.num_to_level.pet_battles_to_level)
+    
+    if (#self.buffer > header_index) then
+      self:insert({{text = self.dict.to_level_header, colspan = 2, font = "lcGameFontNormal"}}, header_index)
+    end
   end
   
   return self.buffer

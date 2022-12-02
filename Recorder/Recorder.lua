@@ -277,13 +277,13 @@ function recorder.close()
     local delta = time_utils.systemTime() - session.current_time
     session.elapsed_time = session.elapsed_time + delta
     session.stats_by_level[char.level].elapsed_time = session.stats_by_level[char.level].elapsed_time + delta
+     recorder.session.end_time = time_utils.unixTime()
   end
   
   recorder.stop()
   
   recorder.started = false
   recorder.closed = true
-  recorder.session.end_time = time_utils.unixTime()
 end
 
 function recorder.initialize(character)

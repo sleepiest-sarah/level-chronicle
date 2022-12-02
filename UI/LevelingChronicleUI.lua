@@ -11,7 +11,11 @@ local function isRegionOffScreen(region)
   local screenWidth, screenHeight = GetScreenWidth(), GetScreenHeight()
   local left,bottom = region:GetLeft(), region:GetBottom()
   
-  return (left < 0 or bottom < 0) or (left > screenWidth or bottom > screenHeight)
+  if (left and bottom) then
+    return (left < 0 or bottom < 0) or (left > screenWidth or bottom > screenHeight)
+  else
+    return true
+  end
 end
 
 local function refreshUi()
@@ -47,6 +51,7 @@ local function init(event, current_character)
   lc.UI.RegisterOptionsPanel()
   
   saved_state.session_monitor_visible = lc.UI.Options.show_monitor_on_login and (current_character.level < current_character.max_level)
+  
   if (saved_state.session_monitor_visible) then
     lc.UI.OpenSessionMonitor(saved_state.session_monitor_expanded)
   end
