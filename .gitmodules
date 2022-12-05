@@ -1,0 +1,12 @@
+[submodule "Libs/LuaCore"]
+	path = Libs/LuaCore
+	url = https://github.com/sleepiest-sarah/lua-core.git
+[submodule "Libs/LuaTesting"]
+	path = Libs/LuaTesting
+	url = https://github.com/sleepiest-sarah/lua-wow-testing.git
+[submodule "Libs/WowEventFramework"]
+	path = Libs/WowEventFramework
+	url = https://github.com/sleepiest-sarah/wow-event-framework.git
+[submodule "Libs/SleepyUI"]
+	path = Libs/SleepyUI
+	url = https://github.com/sleepiest-sarah/sleepy-ui.git
