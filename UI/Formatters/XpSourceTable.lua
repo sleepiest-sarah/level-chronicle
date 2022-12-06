@@ -19,7 +19,7 @@ function f:format()
   
   for _,k in ipairs(m.sorted_percent_keys) do
     local source = m.xp_sources[k]
-    if (source and source.pct ~= "-" and source.pct ~= "0%" and self.dict[k]) then
+    if (source and source.pct ~= "-" and source.pct ~= "0%" and source.num > 0 and self.dict[k]) then
       local row = {}
       row[1] = {text = self.dict[k], colspan = 2, justifyh="LEFT"}
       row[2] = {text = source.pct}

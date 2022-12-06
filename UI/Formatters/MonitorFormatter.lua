@@ -27,7 +27,7 @@ function f:format()
   
   if (m.num_to_level) then
     local header_index = #self.buffer
-    
+
     self:appendKeyValueTableRow("scenarios_to_level", m.num_to_level.scenarios_to_level)
     self:appendKeyValueTableRow("battlegrounds_to_level", m.num_to_level.battlegrounds_to_level)
     self:appendKeyValueTableRow("quests_to_level", m.num_to_level.quests_to_level)
@@ -45,7 +45,7 @@ function f:format()
     self:appendKeyValueTableRow("pet_battles_to_level", m.num_to_level.pet_battles_to_level)
     
     if (#self.buffer > header_index) then
-      self:insert({{text = self.dict.to_level_header, colspan = 2, font = "lcGameFontNormal"}}, header_index)
+      self:insert({{text = self.dict.to_level_header, colspan = 2, font = "lcGameFontNormal"}}, header_index+1)
     end
   end
   

@@ -26,5 +26,7 @@ end
 function lcMainWindowMixin:OnLoad()
   UI.Widgets.MainWindow = self
   
-  NineSliceUtil.ApplyLayout(self, NineSliceLayouts.WoodenNeutralFrameTemplate)
+  self.backgroundTexture:SetAtlas(lc.UI.Definitions.MAIN_WINDOW_BACKGROUND_TEXTURE)
+  
+  NineSliceUtil.ApplyLayout(self, lc.UI.Definitions.MAIN_WINDOW_NINE_SLICE)
 end

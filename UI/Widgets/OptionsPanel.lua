@@ -30,12 +30,27 @@ local function createAndInitializeControlFrame(self, option)
     
     local selections = {}
     for i,label in ipairs(option.selections) do
-      table.insert(selections, {label = label, value = i, key=option.key})
+      table.insert(selections, {label = label, text = label, value = i, key=option.key})
     end
     
-    frame.control.DropDown:SetupSelections(selections,lc.UI.Options[option.key])
-    
-    frame.control.cbrHandles:RegisterCallback(frame.control.DropDown.Button, SelectionPopoutButtonMixin.Event.OnValueChanged, lcOptionsPanelMixin.Dropdown_OnValueChanged);
+    if (frame.control.DropDown) then  --retail
+      frame.control.DropDown:SetupSelections(selections,lc.UI.Options[option.key])
+      
+      frame.control.cbrHandles:RegisterCallback(frame.control.DropDown.Button, SelectionPopoutButtonMixin.Event.OnValueChanged, lcOptionsPanelMixin.Dropdown_OnValueChanged);
+    else
+      frame.control.initialize = function ()
+        for _,selection in ipairs(selections) do
+          selection.func = function (button)
+                              frame.control.Text:SetText(selection.text)
+                              lcOptionsPanelMixin.Dropdown_OnValueChanged(nil, selection)
+                            end
+          selection.checked = lc.UI.Options[option.key] == selection.value
+
+          UIDropDownMenu_AddButton(selection)
+        end
+      end
+      frame.control.Text:SetText(selections[lc.UI.Options[option.key]].text)
+    end
   end
   
   if (option.tooltip) then
@@ -103,11 +118,16 @@ function lc.UI.RegisterOptionsPanel()
   local options_frame = CreateFrame("Frame", nil, nil, "lcOptionsPanelTemplate")
   local about_frame = CreateFrame("Frame", nil, nil, "lcAboutPanelTemplate")
   
+  -- these are for the legacy InterfaceOptions panels used in Classic
+  options_frame.name = lc.UI.Strings.OPTIONS_CATEGORY
+  about_frame.name = lc.UI.Strings.ABOUT_CATEGORY
+  about_frame.parent = lc.UI.Strings.OPTIONS_CATEGORY
+  
   local category, layout = Settings.RegisterCanvasLayoutCategory(options_frame, lc.UI.Strings.OPTIONS_CATEGORY)
   options_frame.category = category
   Settings.RegisterAddOnCategory(category)
   
-  local subcategory, sub_layout = Settings.RegisterCanvasLayoutSubcategory(category, about_frame, lc.UI.Strings.ABOUT_CATEGORY);
+  local subcategory, sub_layout = Settings.RegisterCanvasLayoutSubcategory(category, about_frame, lc.UI.Strings.ABOUT_CATEGORY)
   about_frame.category = subcategory
   
   options_frame:LoadOptions()

@@ -1,0 +1,41 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+  <Frame name="Options_CheckboxControlTemplate" virtual="true">
+    <Size x="280" y="26"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="text" inherits="GameFontNormal" justifyH="LEFT" wordwrap="false"/>
+			</Layer>
+		</Layers>
+    <Frames>
+      <CheckButton parentKey="control" inherits="SettingsCheckBoxTemplate">
+        <Anchors>
+          <Anchor point="RIGHT" />
+        </Anchors>
+      </CheckButton>
+    </Frames>
+  </Frame>
+  
+  <Frame name="Options_DropdownControlTemplate" virtual="true">
+    <Size x="280" y="30"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="text" inherits="GameFontNormal" justifyH="LEFT" wordwrap="false"/>
+			</Layer>
+		</Layers>
+    <Frames>
+      <Frame parentKey="control" inherits="SettingsTextDropDownControlTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" x="-125" />
+        </Anchors>
+        <Scripts>
+          <OnLoad inherit="prepend">
+            self.DropDown.DecrementButton:Hide()
+            self.DropDown.IncrementButton:Hide()
+          </OnLoad>
+          
+        </Scripts>
+      </Frame>
+    </Frames>
+  </Frame>
+</Ui>

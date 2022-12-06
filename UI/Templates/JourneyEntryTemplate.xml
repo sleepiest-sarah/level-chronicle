@@ -76,14 +76,14 @@
               <Anchors>
                 <Anchor point="TOPRIGHT" x="3" y="-10"/>
               </Anchors>
-              <Scripts>
-                <OnLoad>
-                  self:SetVertexColor(0,0,0)
-                </OnLoad>
-              </Scripts>
             </Texture>
           </Layer>
         </Layers>
+        <Scripts>
+          <OnLoad inherit="prepend">
+            self.header_divider:SetVertexColor(0,0,0)
+          </OnLoad>
+        </Scripts>
       </Frame>
       
     </Frames>

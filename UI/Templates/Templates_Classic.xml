@@ -1,11 +1,9 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
   <Include file="Fonts.xml" />
   <Include file="JourneyEntryTemplate.xml" />
-  <Include file="BookmarkButtonTemplate.xml" />
   <Include file="InfoButtonTemplate.xml" />
   <Include file="TextureTemplates.xml" />
-  <Include file="OptionControlTemplates.xml"/>
-  <Include file="ButtonTemplates.xml" />
-
+  <Include file="OptionControlTemplates_Classic.xml"/>
+  <Include file="ButtonTemplates_Classic.xml" />
 </Ui>
 

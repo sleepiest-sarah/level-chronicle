@@ -2,6 +2,7 @@
   <Script file="Constants\UIConstants.lua" />
   <Script file="Constants\Strings.lua" />
   <Script file="Constants\Definitions.lua"/>
+  <Script file="Constants\ClassicDefinitions.lua"/>
   <Script file="Constants\ModelTemplates.lua" />
   
   <Include file="Formatters\Formatters.xml" />
@@ -11,6 +12,6 @@
   <Script file="Managers\UIController.lua" />
   <Script file="LevelingChronicleUI.lua"/>
    
-  <Include file="Templates\Templates.xml"/>
+  <Include file="Templates\Templates_Classic.xml"/>
   <Include file="Widgets\Widgets.xml" /> 
 </Ui>

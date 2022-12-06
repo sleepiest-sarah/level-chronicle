@@ -33,14 +33,11 @@
         </Scripts>
       </Frame>
       
-      <Button name="SessionMonitorExpandButton" enableMouse="true">
+      <Button name="SessionMonitorExpandButton" enableMouse="true" inherits="SessionMonitorExpandButtonTemplate">
         <Size x="15" y="14"/>
         <Anchors>
           <Anchor point="TOPRIGHT" x="-5" y="-5" />
         </Anchors>
-        <NormalTexture atlas="UI-QuestTrackerButton-Expand-Section" useAtlasSize="true"/>
-        <PushedTexture atlas="UI-QuestTrackerButton-Expand-Section-Pressed" useAtlasSize="true"/>
-        <HighlightTexture atlas="UI-QuestTrackerButton-Highlight" alphaMode="ADD" useAtlasSize="true"/>
         <Scripts>
           <OnClick>
             self:GetParent():ExpandButton_OnClick(self)

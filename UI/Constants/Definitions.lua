@@ -30,6 +30,12 @@ lc.UI.Definitions.BACKDROP_MAIN_WINDOW = {
   insets = {left=4, right=4, top=4, bottom=4}    
 }
 
+-- this is in retail NineSliceLayouts but not classic
+lc.UI.Definitions.MAIN_WINDOW_NINE_SLICE = NineSliceLayouts.WoodenNeutralFrameTemplate
+
+lc.UI.Definitions.MAIN_WINDOW_BACKGROUND_TEXTURE = "UI-Frame-Dragonflight-BackgroundTile"
+lc.UI.Definitions.CHARACTER_TREE_SCROLL_BACKGROUND_TEXTURE = "UI-Frame-NightFae-CardParchment"
+
 lc.UI.Definitions.RECORDER_RUNNING_COLOR = {0, 1, 0.3}
 lc.UI.Definitions.RECORDER_STANDBY_COLOR = {1, .82, 0}
 

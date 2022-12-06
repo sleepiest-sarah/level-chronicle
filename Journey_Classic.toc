@@ -1,0 +1,27 @@
+## Interface: 11403
+## Title: Journey
+## Author: Sarah Mantovani
+## Version: 1.0.2
+## SavedVariables: lcCharacterDb, lcOptionsDb
+
+Libs\WowClassicAPI\WowClassicAPI.xml
+
+embeds.xml
+
+Utils\Constants.lua
+
+Objects\RecordTemplates.lua
+Objects\Character.lua
+
+Utils\DataMigrations.lua
+Utils\DataAccess.lua
+Utils\OptionsDataAccess.lua
+Utils\DataServices.lua
+Utils\Calculator.lua
+
+Recorder\Recorder.lua
+Recorder\RecorderManager.lua
+
+Journey.lua
+
+UI\LevelingChronicleUI_Classic.xml

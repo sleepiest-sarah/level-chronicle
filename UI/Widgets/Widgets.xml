@@ -10,7 +10,7 @@
   <Script file="CharacterJourneyWidget.lua" />
   <Script file="CharacterStatsWidget.lua" />
   
-  <Script file="MainWindowContainer.lua" />
+  <Include file="MainWindowContainer.xml" />
   
   
 </Ui>

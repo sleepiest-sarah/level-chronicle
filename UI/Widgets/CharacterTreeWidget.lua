@@ -57,6 +57,8 @@ end
 function CharacterTreeWidgetMixin:CharacterTreeWidget_OnLoad()
   UI.Widgets.CharacterTreeWidget = self
   
+  self.backgroundTexture:SetAtlas(def.CHARACTER_TREE_SCROLL_BACKGROUND_TEXTURE)
+  
   self:RegisterCallback(self.Character_OnClick)
   self:SetOnAcquireCallback(setButtonStyles)
 end
