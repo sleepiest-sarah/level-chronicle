@@ -39,9 +39,6 @@ lc.UI.Definitions.CHARACTER_TREE_SCROLL_BACKGROUND_TEXTURE = "UI-Frame-NightFae-
 lc.UI.Definitions.RECORDER_RUNNING_COLOR = {0, 1, 0.3}
 lc.UI.Definitions.RECORDER_STANDBY_COLOR = {1, .82, 0}
 
-lc.UI.Definitions.PAUSE_ICON_PATH = "Interface\\AddOns\\Journey\\UI\\Textures\\pause_icon_squared.tga"
-lc.UI.Definitions.PLAY_ICON_PATH = "Interface\\AddOns\\Journey\\UI\\Textures\\play_icon_squared.tga"
-
 lc.UI.Definitions.DRAWN_EXPAND_ICON_PATH = "Interface\\AddOns\\Journey\\UI\\Textures\\expand_icon.tga"
 lc.UI.Definitions.DRAWN_EXPAND_HIGHLIGHT_PATH = "Interface\\AddOns\\Journey\\UI\\Textures\\expand_icon_highlight.tga"
 lc.UI.Definitions.DRAWN_COLLAPSE_ICON_PATH = "Interface\\AddOns\\Journey\\UI\\Textures\\collapse_icon.tga"
@@ -61,7 +58,6 @@ lc.UI.Definitions.JOURNAL_BACKGROUNDS = {
     "Interface\\QUESTFRAME\\QuestBackgroundShadowlandsRevendreth",
     "Interface\\QUESTFRAME\\QuestBackgroundShadowlandsSecretsoftheFirstOnes",
     "Interface\\QUESTFRAME\\QuestBackgroundShadowlands",
-    {file = "Interface\\QUESTFRAME\\QuestBackgroundHordeAlliance", coords = {left = 0.2930, top = 0, right = 0.586, bottom = 0.3984}},
     "Interface\\QUESTFRAME\\QuestBackgroundDragonflightAzureSpan",
     "Interface\\QUESTFRAME\\QuestBackgroundDragonflightDracthyrAwaken",
     "Interface\\QUESTFRAME\\QuestBackgroundDragonflightDragonflight",
@@ -148,7 +144,6 @@ lc.UI.Definitions.TEXT_DIVIDERS = {
     {left=0.7134, right=0.9634, top=0.5820, bottom=.7305},
   }
 
--- TODO
 lc.UI.Definitions.Options = {
     {text = lc.UI.Strings.Options_ContinuousTimer, control="checkbox", key="continuous_timer", tooltip = lc.UI.Strings.Options_ContinuousTimer_Tooltip},
     {text = lc.UI.Strings.Options_ShowOnLogin, control="checkbox", key = "show_monitor_on_login", tooltip = lc.UI.Strings.Options_ShowOnLogin_Tooltip},

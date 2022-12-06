@@ -3,7 +3,82 @@
   <Include file="JourneyEntryTemplate.xml" />
   <Include file="InfoButtonTemplate.xml" />
   <Include file="TextureTemplates.xml" />
-  <Include file="OptionControlTemplates_Classic.xml"/>
-  <Include file="ButtonTemplates_Classic.xml" />
+  
+ <Button name="SessionMonitorExpandButtonTemplate" enableMouse="true" virtual="true">
+    <Size x="15" y="14"/>
+    <NormalTexture file="Interface\Buttons\UI-Panel-QuestHideButton">
+      <TexCoords left="0" right=".5" top="0" bottom=".5"/>
+    </NormalTexture>
+    <PushedTexture file="Interface\Buttons\UI-Panel-QuestHideButton">
+      <TexCoords left=".5" right="1" top="0" bottom=".5"/>
+    </PushedTexture>
+    <HighlightTexture atlas="128-RedButton-Highlight" alphaMode="ADD" useAtlasSize="true"/>
+  </Button>   
+  
+  <Button name="SessionMonitorCollapseButtonTemplate" registerForClicks="LeftButtonUp" virtual="true">
+    <Size x="16" y="16"/>
+    <NormalTexture file="Interface\Buttons\UI-Panel-QuestHideButton">
+      <TexCoords left="0" right=".5" top=".5" bottom="1"/>
+    </NormalTexture>
+    <PushedTexture file="Interface\Buttons\UI-Panel-QuestHideButton">
+      <TexCoords left=".5" right="1" top=".5" bottom="1"/>
+    </PushedTexture>
+    <HighlightTexture atlas="128-RedButton-Highlight" alphaMode="ADD" useAtlasSize="true"/>
+  </Button>  
+  
+  <Button name="BookmarkButtonTemplate" virtual="true">
+    <Size x="40" y="50" />
+    <Layers>
+      <Layer level="OVERLAY">
+        <FontString parentKey="text" font="GameFontNormalMed3">
+          <Anchors>
+            <Anchor point="LEFT" x="5" y="0"/>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+    <NormalTexture parentKey="background" atlas="communities-guildbanner-background" alphaMode="BLEND">
+    </NormalTexture>
+    <Scripts>
+      <OnLoad>
+        self.background:SetRotation(1.5708)
+      </OnLoad>
+    </Scripts>
+  </Button>
+  
+  <Frame name="Options_CheckboxControlTemplate" virtual="true">
+    <Size x="280" y="26"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="text" inherits="GameFontNormal" justifyH="LEFT" wordwrap="false"/>
+			</Layer>
+		</Layers>
+    <Frames>
+      <CheckButton parentKey="control" inherits="InterfaceOptionsCheckButtonTemplate">
+        <Anchors>
+          <Anchor point="RIGHT" />
+        </Anchors>
+      </CheckButton>
+    </Frames>
+  </Frame>
+  
+  <Frame name="Options_DropdownControlTemplate" virtual="true">
+    <Size x="280" y="30"/>
+		<Layers>
+			<Layer level="OVERLAY">
+				<FontString parentKey="text" inherits="GameFontNormal" justifyH="LEFT" wordwrap="false"/>
+			</Layer>
+		</Layers>
+    <Frames>
+      <Frame parentKey="control" inherits="UIDropDownMenuTemplate">
+        <Anchors>
+          <Anchor point="LEFT" relativePoint="RIGHT" x="-125" />
+        </Anchors>
+        <Scripts>
+          
+        </Scripts>
+      </Frame>
+    </Frames>
+  </Frame>  
 </Ui>
 

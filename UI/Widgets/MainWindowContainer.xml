@@ -295,19 +295,20 @@
             </Anchors>
             <Layers>
               <Layer level="ARTWORK">
-                <Texture atlas="StoryHeader-BG" alphaMode="BLEND">
+                <Texture parentKey="bg" file="Interface\AddOns\Journey\UI\Textures\page_control_bg.tga" alphaMode="BLEND">
                   <Anchors>
                     <Anchor point="TOPLEFT"/>
                     <Anchor point="BOTTOMRIGHT" />
                   </Anchors>
-                  <Scripts>
-                    <OnLoad>
-                      self:SetVertexColor(.8,.8,.8)
-                    </OnLoad>
-                  </Scripts>
+                  <TexCoords left="0" top="0" bottom=".90" right=".5117"/>
                 </Texture>
               </Layer>
             </Layers>
+            <Scripts>
+              <OnLoad>
+                self.bg:SetVertexColor(.8,.8,.8)
+              </OnLoad>
+            </Scripts>
             <Frames>
               <Button parentKey="pagePrev">
                 <Size x="25" y="25" />
@@ -329,10 +330,10 @@
                 <Anchors>
                   <Anchor point="TOPRIGHT" x="-10" y="-5"/>
                 </Anchors>
-						<NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
-						<PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
-						<DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
-						<HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
+                <NormalTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Up"/>
+                <PushedTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Down"/>
+                <DisabledTexture file="Interface\Buttons\UI-SpellbookIcon-NextPage-Disabled"/>
+                <HighlightTexture file="Interface\Buttons\UI-Common-MouseHilight" alphaMode="ADD"/>
                 <Scripts>
                   <OnClick>
                     self:GetParent():GetParent():PageButton_OnClick(self, "next")

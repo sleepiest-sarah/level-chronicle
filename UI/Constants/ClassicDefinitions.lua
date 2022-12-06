@@ -2,9 +2,19 @@ local lc = LevelingChronicle
 
 lc.UI.Definitions.MAIN_WINDOW_BACKGROUND_TEXTURE = "collections-background-tile"
 
-lc.UI.Definitions.CHARACTER_TREE_SCROLL_BACKGROUND_TEXTURE = "warboard-parchment"
+lc.UI.Definitions.CHARACTER_TREE_SCROLL_BACKGROUND_TEXTURE = "UI-Frame-Neutral-CardParchment"
 
-lc.UI.Definitions.MAIN_WINDOW_NINE_SLICE = NineSliceLayouts.Dialog
+--lc.UI.Definitions.MAIN_WINDOW_NINE_SLICE = NineSliceLayouts.Dialog
+lc.UI.Definitions.MAIN_WINDOW_NINE_SLICE = {
+		TopLeftCorner =	{ atlas = "UI-Frame-DiamondMetal-CornerTopLeft", x=-6, y=7 },
+		TopRightCorner =	{ atlas = "UI-Frame-DiamondMetal-CornerTopRight", x=6, y=7 },
+		BottomLeftCorner =	{ atlas = "UI-Frame-DiamondMetal-CornerBottomLeft", x=-6, y=-7 },
+		BottomRightCorner =	{ atlas = "UI-Frame-DiamondMetal-CornerBottomRight", x=6, y=-7 },
+		TopEdge = { atlas = "_UI-Frame-DiamondMetal-EdgeTop",},
+		BottomEdge = { atlas = "_UI-Frame-DiamondMetal-EdgeBottom",},
+		LeftEdge = { atlas = "!UI-Frame-DiamondMetal-EdgeLeft",},
+		RightEdge = { atlas = "!UI-Frame-DiamondMetal-EdgeRight",},
+	}
 
 lc.UI.Definitions.JOURNAL_BACKGROUNDS = {
     {file = "Interface\\QUESTFRAME\\QuestBackgroundHordeAlliance", coords = {left = 0.0009765625, top = 0.0009765625, right = 0.29296875, bottom = 0.3984375}},
