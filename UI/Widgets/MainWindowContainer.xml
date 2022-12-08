@@ -159,7 +159,7 @@
                   <KeyValue key="leftPadding" value="20" type="number" />
                   <KeyValue key="topPadding" value="20" type="number" />
                   <KeyValue key="rowPadding" value="5" type="number" />
-                  <KeyValue key="bottomPadding" value="80" type="number" />
+                  <KeyValue key="bottomPadding" value="120" type="number" />
                 </KeyValues>
                 <Layers>
                   <Layer level="BACKGROUND">

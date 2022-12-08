@@ -25,7 +25,8 @@ local num_event_keys = {
     pet_battle = "num_pet_battles",
     kill_instance = "num_kills_instance",
     scenario_bonus = "num_scenarios_completed",
-    kill = "num_kills"
+    kill = "num_kills",
+    crafting = "num_first_crafts",
   }
                       
 local xp_gained_keys = {
@@ -35,7 +36,8 @@ local xp_gained_keys = {
     scenario = "scenario_xp_gained",
     battleground = "battleground_xp_gained",
     gathering = "gathering_xp_gained",
-    pet_battle = "pet_battle_xp_gained"
+    pet_battle = "pet_battle_xp_gained",
+    crafting = "crafting_xp_gained"
   }
   
 local volatile_cache = {}
@@ -118,7 +120,7 @@ function m.buildCharacterJourneyModel(character_guid, page, page_size)
   for i=min,max do
     local level = sorted_keys[i]
 
-    local cache_key = "journey-level-model-"..level
+    local cache_key = "journey-level-model-" .. character_guid .. "-" ..level
     if (static_cache[cache_key]) then -- any past level
       table.insert(model.stats_by_level, static_cache[cache_key])
     elseif (volatile_cache[cache_key]) then --current level
@@ -133,6 +135,7 @@ function m.buildCharacterJourneyModel(character_guid, page, page_size)
           quest_xp_gained = stats.quest_xp_gained,
           kill_xp_gained = stats.kill_xp_gained,
           scenario_xp_gained = stats.scenario_xp_gained,
+          crafting_xp_gained = stats.crafting_xp_gained,
           elapsed_time = stats.elapsed_time,
           level = level,
           level_seed = model.seed + level,
@@ -148,7 +151,8 @@ function m.buildCharacterJourneyModel(character_guid, page, page_size)
           battleground = 0,
           gathering = 0,
           pet_battle = 0,
-          scenario = 0
+          scenario = 0,
+          crafting = 0
         }
       for k,_ in pairs(level_model.activity_stats) do
         level_model.activity_stats[k] = {
@@ -167,6 +171,7 @@ function m.buildCharacterJourneyModel(character_guid, page, page_size)
       local calc_stats = calc.calculateSessionStats(stats, stats.elapsed_time, model.char)
       level_model.xp_rate = math_utils.getFormattedUnitString(calc_stats.xp_rate * 3600, "integer/hour")
       level_model.rested_xp_time_saved = calc_stats.rested_xp_time_saved
+      level_model.warmode_time_saved = calc_stats.warmode_time_saved
       
       if (level == tostring(model.char.level)) then
         volatile_cache[cache_key] = level_model
@@ -192,12 +197,14 @@ function m.buildCharacterStatsModel(character_guid)
   model.xp_rate = calc_stats.xp_rate * 3600
   model.pct_levels_rate = calc_stats.pct_levels_rate * 3600
   model.rested_xp_time_saved = calc_stats.rested_xp_time_saved
+  model.warmode_time_saved = calc_stats.warmode_time_saved
   
   local percents = calc.calculateXpSourcePercents(overall_stats)
   local activity_xp_rates = calc.calculateXpRates(overall_stats)
   
   local stats_by_level = ds.getCharacterStatsByLevel(character_guid)
-  local xp_per_event = calc.calculateAveragePctLevelPerEvent(stats_by_level)
+  -- TODO shouldn't have to pass in the character here, but I don't want to rework how the max XP is tracked atm
+  local xp_per_event = calc.calculateAveragePctLevelPerEvent(stats_by_level,model.char)
   
   model.xp_sources = {}
   model.dungeon_xp_sources = {}

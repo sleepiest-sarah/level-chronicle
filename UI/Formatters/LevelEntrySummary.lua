@@ -22,6 +22,10 @@ function f:format()
     self:append({{text = self.dict.rested_xp_time_saved, colspan = 1, justifyh = "LEFT"}, {text = string_utils.getTimerFormat(m.rested_xp_time_saved), justifyh = "RIGHT"}})
   end
   
+  if (self:isValidDuration(m.warmode_time_saved)) then
+    self:append({{text = self.dict.warmode_time_saved, colspan = 1, justifyh = "LEFT"}, {text = string_utils.getTimerFormat(m.warmode_time_saved), justifyh = "RIGHT"}})
+  end
+  
   if (self:isValidKeyValue("xp_rate", m.xp_rate)) then
     self:appendRow({text = self.dict.xp_rate, colspan = 1, justifyh = "LEFT"}, {text = m.xp_rate, justifyh = "RIGHT"})
   end

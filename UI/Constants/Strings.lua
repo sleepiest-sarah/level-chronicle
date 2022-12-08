@@ -28,6 +28,7 @@ lc.UI.Strings.JourneyStatDisplay = {
     quest_xp_gained = "Quest XP",
     kill_xp_gained = "Kill X",
     rested_xp_time_saved = "Saved from Rested XP",
+    warmode_time_saved = "Saved from War Mode",
     bonus_group_xp_gained = "Group XP Time Saved",
     elapsed_time = "Active Leveling Time",
     quest = "Quests Completed:",
@@ -38,6 +39,7 @@ lc.UI.Strings.JourneyStatDisplay = {
     pet_battle = "Pet Battles Battled:",
     scenario = "Dungeons Run:",
     battleground = "Battlegrounds Fought:",
+    crafting = "First Crafts:",
     xp_rate = "Average XP / Hour",
     pct_levels_rate = "Average Levels / Hour",
 }
@@ -56,11 +58,11 @@ lc.UI.Strings.XpSourceTable = {
     kill_instance = "     Kill",
     scenario_bonus = "     Bonus", 
     kill_world = "Kill",
-
     gathering = "Gathering",
     battleground = "Battleground",
     scenario = "Dungeon",
-    pet_battle = "Pet Battle"
+    pet_battle = "Pet Battle",
+    crafting = "Crafting",
   }
   
 lc.UI.Strings.SessionMonitorDisplay = {

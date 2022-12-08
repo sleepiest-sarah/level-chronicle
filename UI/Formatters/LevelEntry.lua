@@ -15,7 +15,7 @@ function f:format()
   local m = self.model
     
   self:appendRow({text = "% Level Per", justifyh = "RIGHT", colspan=6})
-  
+
   for _,k in ipairs(m.sorted_activity_keys) do
     local v = m.activity_stats[k]
     if (v.num > 0) then

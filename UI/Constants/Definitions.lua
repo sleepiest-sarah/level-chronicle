@@ -34,7 +34,7 @@ lc.UI.Definitions.BACKDROP_MAIN_WINDOW = {
 lc.UI.Definitions.MAIN_WINDOW_NINE_SLICE = NineSliceLayouts.WoodenNeutralFrameTemplate
 
 lc.UI.Definitions.MAIN_WINDOW_BACKGROUND_TEXTURE = "UI-Frame-Dragonflight-BackgroundTile"
-lc.UI.Definitions.CHARACTER_TREE_SCROLL_BACKGROUND_TEXTURE = "UI-Frame-NightFae-CardParchment"
+lc.UI.Definitions.CHARACTER_TREE_SCROLL_BACKGROUND_TEXTURE = "UI-Frame-Dragonflight-CardParchment"
 
 lc.UI.Definitions.RECORDER_RUNNING_COLOR = {0, 1, 0.3}
 lc.UI.Definitions.RECORDER_STANDBY_COLOR = {1, .82, 0}

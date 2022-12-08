@@ -20,7 +20,8 @@ local timestamps = {
     gathering = -math.huge,
     scenario_completed = -math.huge,
     pet_battle_started = -math.huge,
-    scenario_started = -math.huge
+    scenario_started = -math.huge,
+    tradeskill_cast_completed = -math.huge
   }
   
 local function sanityCheckValue(key, delta)
@@ -54,6 +55,11 @@ local function playerExpUpdate(event, unitid)
     end
     incrementStat("total_xp_gained", xp_gain)
     
+    local bonus_rested_xp = LCMathUtils.safesub(char.rested_xp, GetXPExhaustion())
+    if (bonus_rested_xp > 0) then
+      incrementStat("bonus_rested_xp_gained", bonus_rested_xp)
+    end
+    
     local xp_pct = xp_gain / max_xp
     incrementStat("pct_levels_gained", xp_pct)
     
@@ -71,6 +77,9 @@ local function playerExpUpdate(event, unitid)
       timestamps.pet_battle_started = -math.huge
     elseif (inEventWindow(timestamps.gathering)) then
       incrementStat("gathering_xp_gained", xp_gain)
+    elseif (inEventWindow(timestamps.tradeskill_cast_completed)) then
+      incrementStat("num_first_crafts", 1)
+      incrementStat("crafting_xp_gained", xp_gain)
     elseif (C_PvP.IsBattleground()) then
       incrementStat("battleground_xp_gained", xp_gain)
     elseif (inInstance and instanceType == "party") then
@@ -81,7 +90,7 @@ local function playerExpUpdate(event, unitid)
     
     char.xp = current_xp
     char.max_xp = max_xp
-    char.rested_xp = GetXPExhaustion()
+    char.rested_xp = GetXPExhaustion() or 0
   end
 end
 
@@ -100,9 +109,19 @@ local function playerScenarioCompleted(event, questId, xp, money)
   end
 end
 
---TODO check for war mode bonus xp
+local function checkWarModeBonus(xp_gain)
+  if (C_PvP.IsWarModeActive()) then
+    local pct_bonus = C_PvP.GetWarModeRewardBonus() / 100
+    local bonus_xp = xp_gain - (xp_gain / (1+pct_bonus))
+    print(xp_gain,bonus_xp)
+    incrementStat("bonus_warmode_xp_gained", bonus_xp)
+  end
+end
+
 local function playerQuestTurnedIn(event, questId, xp, money)
   if (xp and xp > 0) then
+    checkWarModeBonus(xp)
+    
     incrementStat("quest_xp_gained", xp)
     timestamps.quest_completed = time_utils.systemTime()
     
@@ -114,11 +133,6 @@ end
 local function playerMsgCombatXpGain(event, ...)
   local msg = ...
   
-  local rested_xp = string.match(msg, "%+(%d+) exp Rested bonus")
-  if (rested_xp) then
-    incrementStat("bonus_rested_xp_gained", rested_xp)
-  end
-  
   local group_xp = string.match(msg, "%+(%d+) group bonus")
   if (group_xp) then
     incrementStat("bonus_group_xp_gained", group_xp)
@@ -126,6 +140,7 @@ local function playerMsgCombatXpGain(event, ...)
   
   local xp_gain = string.match(msg, "dies, you gain (%d+) experience.")
   if (xp_gain) then
+    checkWarModeBonus(xp_gain)
     incrementStat("kill_xp_gained", xp_gain)
     incrementStat("num_kills", 1)
     
@@ -147,6 +162,10 @@ local function playerMsgCombatXpGain(event, ...)
     timestamps.player_kill = time_utils.systemTime()
   end
   
+end
+
+local function tradeskillCastComplete(event, scrapping)
+  timestamps.tradeskill_cast_completed = time_utils.systemTime()
 end
 
 -- PET_BATTLE_CLOSE gets called twice. could use PET_BATTLE_OVER but the gap between that and PLAYER_XP_UPDATE is significant
@@ -171,6 +190,7 @@ local function playerLevelUp(event, newLevel)
     end
     
     if (newLevel == char.max_level) then
+      session.events.levels[char.level] = {date_reached = time_utils.unixTime()}
       recorder.stop()
     end
     
@@ -305,6 +325,7 @@ function recorder.initialize(character)
   ef.registerEvent("PVP_MATCH_COMPLETE", playerBattlegroundComplete)
   ef.registerEvent("PLAYER_ENTERING_WORLD", playerEnteringWorld)
   ef.registerEvent("PET_BATTLE_OPENING_DONE", petBattleStart)
+  ef.registerEvent("UPDATE_TRADESKILL_CAST_COMPLETE", tradeskillCastComplete)
 end
 
 return recorder

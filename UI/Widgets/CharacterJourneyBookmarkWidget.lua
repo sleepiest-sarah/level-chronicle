@@ -23,15 +23,15 @@ local function fuzzyListLayout(content, children)
     local child_height = children[1] and children[1]:GetHeight() or 0
     local num_rows = math.floor(content:GetHeight() / child_height)
     local num_rows_per_child = math.floor(num_rows / #children)
-    
 		for i = 1, #children do
 			local child = children[i]
 			
 			child:ClearAllPoints()
+      
 			if i == 1 then
 				child:SetPoint("TOPLEFT", content, "TOPLEFT", content.leftPadding, -content.topPadding)
 			else
-        local row = math_utils.rand(0,num_rows_per_child-1, content.model.seed)
+        local row = math_utils.rand(0,num_rows_per_child-1, content.model.seed + i)
 				child:SetPoint("TOPLEFT", children[i-1], "BOTTOMLEFT", 0, -row * child_height)
 			end
 		end

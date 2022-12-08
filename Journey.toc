@@ -1,7 +1,7 @@
 ## Interface: 10002
 ## Title: Journey
 ## Author: Sarah Mantovani
-## Version: 1.0.2
+## Version: 1.0.3
 ## SavedVariables: lcCharacterDb, lcOptionsDb
 
 embeds.xml
@@ -23,4 +23,3 @@ Recorder\RecorderManager.lua
 Journey.lua
 
 UI\LevelingChronicleUI.xml
-

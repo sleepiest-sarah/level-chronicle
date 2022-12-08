@@ -27,6 +27,11 @@ function f:format()
     self:append(dict.rested_xp_time_saved)
     self:append(string_utils.getTimerFormat(m.rested_xp_time_saved))
   end
+  
+  if (self:isValidDuration(m.warmode_time_saved)) then
+    self:append(dict.warmode_time_saved)
+    self:append(string_utils.getTimerFormat(m.warmode_time_saved))
+  end
 
   if (m.xp_rate and m.xp_rate > 0) then
     local v = math_utils.getFormattedUnitString(m.xp_rate, "integer/hour")

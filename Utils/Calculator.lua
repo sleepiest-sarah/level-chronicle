@@ -19,6 +19,10 @@ function m.calculateSessionStats(stats, elapsed_time, char)
   local total_xp_no_rested_rate = safediv(total_xp_no_rested, elapsed_time)
   res.rested_xp_time_saved = safediv(stats.bonus_rested_xp_gained, total_xp_no_rested_rate)
   
+  local total_xp_no_warmode_bonus = safesub(stats.total_xp_gained, stats.bonus_warmode_xp_gained)
+  local total_xp_no_warmode_bonus_rate = safediv(total_xp_no_warmode_bonus, elapsed_time)
+  res.warmode_time_saved = safediv(stats.bonus_warmode_xp_gained, total_xp_no_warmode_bonus_rate)
+  
   res.time_to_level = res.xp_rate == 0 and nil or ((char.max_xp - char.xp) / res.xp_rate)
   
   return res
@@ -51,6 +55,7 @@ function m.calculateXpSourcePercents(stats)
   res.scenario = safediv(stats.scenario_xp_gained, stats.total_xp_gained)
   res.kill_world = safediv(stats.kill_xp_world_gained, stats.total_xp_gained)
   res.battleground = safediv(stats.battleground_xp_gained, stats.total_xp_gained)
+  res.crafting = safediv(stats.crafting_xp_gained, stats.total_xp_gained)
   
   local scenario_bonus = safesub(stats.scenario_xp_gained,stats.kill_xp_instance_gained)
   res.kill_instance = safediv(stats.kill_xp_instance_gained, stats.total_xp_gained)
@@ -69,6 +74,7 @@ function m.calculateXpRates(stats)
   res.scenario = safediv(stats.scenario_xp_gained, stats.time_scenarios)
   res.battleground = safediv(stats.battleground_xp_gained, stats.time_battlegrounds)
   res.kill_world = safediv(stats.kill_xp_world_gained, open_world_time)
+  res.crafting = safediv(stats.crafting_xp_gained, open_world_time)
   --res.other = safediv(stats.other_xp_gained, open_world_time)
   
   local scenario_bonus = safesub(stats.scenario_xp_gained,stats.kill_xp_instance_gained)
@@ -100,6 +106,7 @@ function m.calculatePctLevelPerEvent(stats, total_xp)
   res.kill_world = safediv(safediv(stats.kill_xp_world_gained, stats.num_kills_world), total_xp)
   res.kill = safediv(safediv(stats.kill_xp_gained, stats.num_kills), total_xp)
   res.battleground = safediv(safediv(stats.battleground_xp_gained, stats.num_battlegrounds_completed), total_xp)  
+  res.crafting = safediv(safediv(stats.crafting_xp_gained, stats.num_first_crafts), total_xp)
   
   local scenario_bonus = safesub(stats.scenario_xp_gained,stats.kill_xp_instance_gained)
   res.scenario_bonus = safediv(safediv(scenario_bonus, stats.num_scenarios_completed), total_xp)
@@ -108,13 +115,14 @@ function m.calculatePctLevelPerEvent(stats, total_xp)
   return res
 end
 
-function m.calculateAveragePctLevelPerEvent(char_level_records)
+function m.calculateAveragePctLevelPerEvent(char_level_records, char)
   local level_averages = {}
   local level_nums = {}
   local res = {}
   
   for level, level_record in pairs(char_level_records) do
-    level_averages[level] = m.calculatePctLevelPerEvent(level_record)
+    local max_xp = tostring(char.level) == level and char.max_xp or level_record.total_xp_gained
+    level_averages[level] = m.calculatePctLevelPerEvent(level_record,max_xp)
     level_nums[level] = {
         quest = level_record.num_quests_completed,
         gathering = level_record.num_gathers,
@@ -123,7 +131,8 @@ function m.calculateAveragePctLevelPerEvent(char_level_records)
         kill_world = level_record.num_kills_world,
         battleground = level_record.num_battlegrounds_completed,
         scenario_bonus = level_record.num_scenarios_completed,
-        kill_instance = level_record.num_kills_instance
+        kill_instance = level_record.num_kills_instance,
+        crafting = level_record.num_first_crafts
       }
   end
   
