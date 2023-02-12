@@ -34,7 +34,7 @@ When yellow, the timer is paused and waiting for leveling activity.
 Summary of leveling statistics for all recorded levels. The bottom table gives an overview of the different sources from which you've obtained experience.
 
 #### Right Page
- Shows summaries for each recorded level
+Shows summaries for each recorded level
       
 Can be scrolled using the arrow buttons at the bottom, by clicking the bookmarks on the right, or by using the mouse wheel. 
 Bookmarks will appear every 10 recorded levels and allow navigating directly to specific levels.
@@ -42,10 +42,13 @@ Bookmarks will appear every 10 recorded levels and allow navigating directly to 
 ### Glossary
 
 #### Active Leveling Time
-  Time you were participating in activities that grant experience. It's a best guess based on how what you're currently doing and how often experience has been received.
+  Time you were participating in activities that grant experience. It's a best guess based on how what you're currently doing and how often experience is gained.
 
 #### % Level or % Level Per
   On average how much of a level you gain from doing one of these. One kill, one dungeon, one battleground, etc.
 
 #### Saved from Rested XP
   How much longer it would have taken to reach your current level if you had not had rested experience.
+
+#### Dungeon XP
+  Dungeons give experience primarily through kills and LFG/scenario bonuses. However, the Blizzard API doesn't consider these sources distinct from regular over-world kills or quests. Because dungeons are a central part of many players' leveling experiences, Journey includes dungeons as a primary experience source. And because, there's overlap between over-world kills and dungeon kills, XP percents won't always add up to 100% when dungeons are involved.

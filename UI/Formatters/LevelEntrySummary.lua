@@ -13,6 +13,10 @@ end
 
 function f:format()
   local m = self.model
+  
+  if (m.is_max_level) then
+    return self.buffer
+  end
     
   if (self:isValidDuration(m.elapsed_time)) then
     self:append({{text = self.dict.elapsed_time, colspan = 1, justifyh = "LEFT"}, {text = string_utils.getTimerFormat(m.elapsed_time), justifyh = "RIGHT"}})

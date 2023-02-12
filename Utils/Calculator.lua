@@ -64,6 +64,27 @@ function m.calculateXpSourcePercents(stats)
   return res
 end
 
+-- would like to combine with calculateXpSourcePercents but results for that are currently used directly
+function m.calculateXpPercents(stats, xp_gained)
+  local res = {}
+  xp_gained = xp_gained or stats.total_xp_gained
+  
+  res.quest = safediv(stats.quest_xp_gained, xp_gained)
+  res.gathering = safediv(stats.gathering_xp_gained, xp_gained)
+  res.pet_battle = safediv(stats.pet_battle_xp_gained, xp_gained)
+  res.scenario = safediv(stats.scenario_xp_gained, xp_gained)
+  res.kill_world = safediv(stats.kill_xp_world_gained, xp_gained)
+  res.kill = safediv(stats.kill_xp_gained, xp_gained)
+  res.battleground = safediv(stats.battleground_xp_gained, xp_gained)
+  res.crafting = safediv(stats.crafting_xp_gained, xp_gained)
+  
+  local scenario_bonus = safesub(stats.scenario_xp_gained,stats.kill_xp_instance_gained)
+  res.kill_instance = safediv(stats.kill_xp_instance_gained, xp_gained)
+  res.scenario_bonus = safediv(scenario_bonus, xp_gained)
+  
+  return res
+end
+
 function m.calculateXpRates(stats)
   local res = {}
   

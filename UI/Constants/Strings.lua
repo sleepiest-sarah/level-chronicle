@@ -50,7 +50,7 @@ lc.UI.Strings.XpSourceTable_Headers = {
     pct = "% XP",
     rate = "XP/Hour",
     num = "#",
-    per = "% Level"
+    per = "% Per"
   }
 lc.UI.Strings.XpSourceTable = {
     quest = "Quest",
@@ -169,13 +169,19 @@ lc.UI.Strings.Information_Full =
     <h1 align="CENTER">Glossary</h1>
     <br />
     <h3>Active Leveling Time</h3>
-    <p>Time you were participating in activities that grant experience. It's a best guess based on how what you're<br /> currently doing and how often experience has been received.</p>
+    <p>Time you were participating in activities that grant experience. It's a best guess based on how what you're<br /> currently doing and how often experience is gained.</p>
     <br/>
-    <h3>% Level or % Level Per</h3>
+    <h3>% Per</h3>
     <p>On average how much of a level you gain from doing one of these. One kill, one dungeon, one battleground, etc.</p>
+    <br/>
+    <h3>% Level</h3>
+    <p>Percent of experience gained from this activity for the recorded the level.</p>
     <br/>
     <h3>Saved from Rested XP</h3>
     <p>How much longer it would have taken to reach your current level if you had not had rested experience.</p>  
+    <br />
+    <h3>Dungeon XP</h3>
+    <p>Dungeons give experience primarily through kills and LFG/scenario bonuses. However, the Blizzard API doesn't <br/>consider these sources distinct from regular over-world kills or quests. Because dungeons are a central part of <br/>many players' leveling experiences, Journey includes dungeons as a primary experience source. And because, <br/>there's overlap between over-world kills and dungeon kills, XP percents won't always add up to 100% when <br/>dungeons are involved.</p>
   </body>
 </html>
 ]]

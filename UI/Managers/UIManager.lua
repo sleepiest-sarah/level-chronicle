@@ -144,6 +144,7 @@ function m.buildCharacterJourneyModel(character_guid, page, page_size)
       -- total_xp_gained isn't accurate if this is the character's current level
       local max_xp = tostring(model.char.level) == level and model.char.max_xp or stats.total_xp_gained
       local pct_per_event = calc.calculatePctLevelPerEvent(stats, max_xp)
+      local pct_of_level = calc.calculateXpPercents(stats, max_xp)
       
       level_model.activity_stats = {
           kill = 0,
@@ -156,7 +157,8 @@ function m.buildCharacterJourneyModel(character_guid, page, page_size)
         }
       for k,_ in pairs(level_model.activity_stats) do
         level_model.activity_stats[k] = {
-            pct_per_event = string.format("%.2f%%",pct_per_event[k] * 100),
+            pct_per_event = string.format("%.1f%%",pct_per_event[k] * 100),
+            pct = string.format("%.1f%%",pct_of_level[k] * 100),
             num = stats[num_event_keys[k]],
             xp = stats[xp_gained_keys[k]]
           }
@@ -172,6 +174,7 @@ function m.buildCharacterJourneyModel(character_guid, page, page_size)
       level_model.xp_rate = math_utils.getFormattedUnitString(calc_stats.xp_rate * 3600, "integer/hour")
       level_model.rested_xp_time_saved = calc_stats.rested_xp_time_saved
       level_model.warmode_time_saved = calc_stats.warmode_time_saved
+      level_model.is_max_level = tostring(model.char.max_level) == level
       
       if (level == tostring(model.char.level)) then
         volatile_cache[cache_key] = level_model

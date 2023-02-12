@@ -167,6 +167,13 @@ function lc.UI.ToggleMainWindow()
   end
 end
 
+local function checkPlayerMaxLevel(event, newLevel)
+  if (GetMaxLevelForPlayerExpansion() == newLevel) then
+    lc.UI.CloseSessionMonitor()
+  end
+end
+
 ef.registerCustomEvent(lc.Event.CHARACTER_INITIALIZED, init)
 ef.registerEvent("PLAYER_LOGOUT", teardown)
 ef.registerCustomEvent("ON_OPTION_CHANGED", onOptionChanged)
+ef.registerCustomEvent(lc.Event.PLAYER_LEVEL_UP, checkPlayerMaxLevel)

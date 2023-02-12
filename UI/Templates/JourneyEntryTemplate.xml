@@ -63,7 +63,7 @@
         <Size x="300" y="130" />
         <KeyValues>
           <KeyValue key="font" value="lcQuestFont" />
-          <KeyValue key="num_columns" value="6" type="number" />
+          <KeyValue key="num_columns" value="10" type="number" />
           <KeyValue key="rowPadding" value="3" type="number" />
         </KeyValues>
         <Anchors>
@@ -71,7 +71,13 @@
         </Anchors>
         <Layers>
           <Layer level="OVERLAY">
-            <Texture parentKey="header_divider" inherits="UnderlineHighlightTextureTemplate">
+            <Texture parentKey="header_divider1" inherits="UnderlineHighlightTextureTemplate">
+              <Size x="40" y="7" />
+              <Anchors>
+                <Anchor point="TOPRIGHT" x="-55" y="-10"/>
+              </Anchors>
+            </Texture>
+            <Texture parentKey="header_divider2" inherits="UnderlineHighlightTextureTemplate">
               <Size x="50" y="7" />
               <Anchors>
                 <Anchor point="TOPRIGHT" x="3" y="-10"/>
@@ -81,7 +87,8 @@
         </Layers>
         <Scripts>
           <OnLoad inherit="prepend">
-            self.header_divider:SetVertexColor(0,0,0)
+            self.header_divider1:SetVertexColor(0,0,0)
+            self.header_divider2:SetVertexColor(0,0,0)
           </OnLoad>
         </Scripts>
       </Frame>
